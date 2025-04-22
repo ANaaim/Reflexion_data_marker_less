@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     ROOT["<strong>project_root</strong>"]
 
@@ -41,3 +42,4 @@ graph TD
     %% –– Résultats de détection
     ROOT --> KP2D["Keypoints2D_monosubject"]
     ROOT --> KPMS["Keypoints_multisubject_IDreseau"]
+````
