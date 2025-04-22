@@ -194,5 +194,26 @@ translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
 fisheye = false
 ````
 
-
 ## 02_Keypoints2D_multisubject
+
+structure of the Data_multi_person.hdf5
+These data should contains the different bbox detected and the keypoints detected. The bbox should be in the format [x1, y1, x2, y2] where x1 and y1 are the coordinates of the top left corner and x2 and y2 are the coordinates of the bottom right corner. The keypoints should be in the format [x, y, conf] where x and y are the coordinates of the keypoint and conf is the confidence of the detection.
+
+````bash
+    |   Data_multi_person.hdf5
+    |
+    +--- frame_01
+    |        |---Id_XX
+    |                |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |                |---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
+    ...
+    |+--- frame_XX
+    |        |---Id_XX
+    |                |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |                |---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]                    
+    |
+    \---metadata
+            \---metadata_XX
+````
+
+
