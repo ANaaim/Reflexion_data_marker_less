@@ -201,19 +201,49 @@ These data should contains the different bbox detected and the keypoints detecte
 
 ````bash
     |   Data_multi_person.hdf5
-    |
-    +--- frame_01
-    |        |---Id_XX
-    |                |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
-    |                |---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
+    +--- cam_01
+    |       |--- frame_01
+    |       |       |---Id_XX
+    |       |               |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
+    |       ...
+    |       \+--- frame_XX
+    |              |---Id_XX
+    |                      |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]                    
     ...
-    |+--- frame_XX
-    |        |---Id_XX
-    |                |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
-    |                |---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]                    
+    +--- cam_XX
+    |       |--- frame_01
+    |       |       |---Id_XX
+    |       |               |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
+    |       ...
+    |       \+--- frame_XX
+    |              |---Id_XX
+    |                      |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]  
     |
     \---metadata
-            \---metadata_XX
+            \---TODO list metadata
 ````
 
+## 03_Keypoints2D_monosubject
+
+The data should be in the same format as the one used in the 02_Keypoints2D_multisubject. The only difference is that there is only one subject and one camera. 
+
+````bash
+    |   Data_mono_person.hdf5
+    +--- cam_01
+    |      \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence]
+    |
+    ...
+    +--- cam_XX
+    |      \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence]
+    |
+    |
+    \---metadata
+            |---Calib_matrix
+            |---dictionary name point to their corresponding indices in the keypoints array
+            |---TODO list metadata
+            \---TODO list metadata
 
