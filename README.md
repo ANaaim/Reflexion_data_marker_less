@@ -1,5 +1,5 @@
 ```mermaid
-graph TD
+graph LR
     ROOT["<strong>project_root</strong>"]
 
     %% Fichier racine
