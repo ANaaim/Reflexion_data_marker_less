@@ -78,6 +78,133 @@ graph LR
 ````
 
 
+````mermaid
+
+```mermaid
+graph LR
+    C___0["C:."]
+    C___0 --> Metadata_data_set_hdf5_1
+    Metadata_data_set_hdf5_1["Metadata_data_set.hdf5"]
+    C___0 --> _2
+    _2[""]
+    00_Calibration_video_3["00_Calibration_video"]
+    00_Calibration_video_3 --> IDXX_calib_4
+    IDXX_calib_4["IDXX_calib"]
+    IDXX_calib_4 --> calib_matrix_toml_5
+    calib_matrix_toml_5["calib_matrix.toml"]
+    calib_matrix_toml_5 --> _6
+    _6[""]
+    IDXX_calib_4 --> extrinsics_7
+    extrinsics_7["extrinsics"]
+    extrinsics_7 --> cam_XX_8
+    cam_XX_8["cam_XX"]
+    cam_XX_8 --> cam_XX_avi_9
+    cam_XX_avi_9["cam_XX.avi"]
+    cam_XX_avi_9 --> _10
+    _10[""]
+    IDXX_calib_4 --> intrinsics_11
+    intrinsics_11["intrinsics"]
+    intrinsics_11 --> cam_XX_12
+    cam_XX_12["cam_XX"]
+    cam_XX_12 --> cam_XX_avi_13
+    cam_XX_avi_13["cam_XX.avi"]
+    cam_XX_avi_13 --> _14
+    _14[""]
+    01_Data_video_15["01_Data_video"]
+    01_Data_video_15 --> Sujet_XX_16
+    Sujet_XX_16["Sujet_XX"]
+    Sujet_XX_16 --> Session_XX_17
+    Session_XX_17["Session_XX"]
+    Session_XX_17 --> Tache_XX_18
+    Tache_XX_18["Tache_XX"]
+    Tache_XX_18 --> calib_mat_toml_19
+    calib_mat_toml_19["calib_mat.toml"]
+    calib_mat_toml_19 --> _20
+    _20[""]
+    Tache_XX_18 --> cam_XX_21
+    cam_XX_21["cam_XX"]
+    cam_XX_21 --> cam_XX_avi_22
+    cam_XX_avi_22["cam_XX.avi"]
+    cam_XX_avi_22 --> _23
+    _23[""]
+    02_Keypoints2D_multisubject_24["02_Keypoints2D_multisubject"]
+    02_Keypoints2D_multisubject_24 --> Methode_XX_25
+    Methode_XX_25["Methode_XX"]
+    Methode_XX_25 --> Sujet_XX_26
+    Sujet_XX_26["Sujet_XX"]
+    Sujet_XX_26 --> Session_XX_27
+    Session_XX_27["Session_XX"]
+    Session_XX_27 --> Tache_XX_28
+    Tache_XX_28["Tache_XX"]
+    Tache_XX_28 --> Data_multi_person_hdf5_29
+    Data_multi_person_hdf5_29["Data_multi_person.hdf5"]
+    Data_multi_person_hdf5_29 --> _30
+    _30[""]
+    03_Keypoints2D_monosubject_31["03_Keypoints2D_monosubject"]
+    03_Keypoints2D_monosubject_31 --> Methode_XX_32
+    Methode_XX_32["Methode_XX"]
+    Methode_XX_32 --> Sujet_XX_33
+    Sujet_XX_33["Sujet_XX"]
+    Sujet_XX_33 --> Session_XX_34
+    Session_XX_34["Session_XX"]
+    Session_XX_34 --> Tache_XX_35
+    Tache_XX_35["Tache_XX"]
+    Tache_XX_35 --> ID_subject_XX_36
+    ID_subject_XX_36["ID_subject_XX"]
+    ID_subject_XX_36 --> Data_mono_person_hdf5_37
+    Data_mono_person_hdf5_37["Data_mono_person.hdf5"]
+    Data_mono_person_hdf5_37 --> _38
+    _38[""]
+    04_Keypoints3D_monosubject_39["04_Keypoints3D_monosubject"]
+    04_Keypoints3D_monosubject_39 --> Methode2D_XX_Methode_3D_XX_40
+    Methode2D_XX_Methode_3D_XX_40["Methode2D_XX_Methode_3D_XX"]
+    Methode2D_XX_Methode_3D_XX_40 --> Sujet_XX_41
+    Sujet_XX_41["Sujet_XX"]
+    Sujet_XX_41 --> Session_XX_42
+    Session_XX_42["Session_XX"]
+    Session_XX_42 --> Tache_XX_43
+    Tache_XX_43["Tache_XX"]
+    Tache_XX_43 --> ID_subject_XX_44
+    ID_subject_XX_44["ID_subject_XX"]
+    ID_subject_XX_44 --> Data_mono_person_c3d_45
+    Data_mono_person_c3d_45["Data_mono_person.c3d"]
+    Data_mono_person_c3d_45 --> Data_mono_person_hdf5_46
+    Data_mono_person_hdf5_46["Data_mono_person.hdf5"]
+    Data_mono_person_c3d_45 --> _47
+    _47[""]
+    05_Ground_truth_3D_48["05_Ground_truth_3D"]
+    05_Ground_truth_3D_48 --> Methode2D_XX_Methode_3D_XX_49
+    Methode2D_XX_Methode_3D_XX_49["Methode2D_XX_Methode_3D_XX"]
+    Methode2D_XX_Methode_3D_XX_49 --> Sujet_XX_50
+    Sujet_XX_50["Sujet_XX"]
+    Sujet_XX_50 --> Session_XX_51
+    Session_XX_51["Session_XX"]
+    Session_XX_51 --> Tache_XX_52
+    Tache_XX_52["Tache_XX"]
+    Tache_XX_52 --> ID_subject_XX_53
+    ID_subject_XX_53["ID_subject_XX"]
+    ID_subject_XX_53 --> calib_matrix_toml_54
+    calib_matrix_toml_54["calib_matrix.toml"]
+    calib_matrix_toml_54 --> Data_mono_person_c3d_55
+    Data_mono_person_c3d_55["Data_mono_person.c3d"]
+    calib_matrix_toml_54 --> Data_mono_person_hdf5_56
+    Data_mono_person_hdf5_56["Data_mono_person.hdf5"]
+    calib_matrix_toml_54 --> _57
+    _57[""]
+    06_Ground_truth_2D_58["06_Ground_truth_2D"]
+    06_Ground_truth_2D_58 --> Methode_XX_59
+    Methode_XX_59["Methode_XX"]
+    Methode_XX_59 --> Sujet_XX_60
+    Sujet_XX_60["Sujet_XX"]
+    Sujet_XX_60 --> Session_XX_61
+    Session_XX_61["Session_XX"]
+    Session_XX_61 --> Tache_XX_62
+    Tache_XX_62["Tache_XX"]
+    Tache_XX_62 --> ID_subject_XX_63
+    ID_subject_XX_63["ID_subject_XX"]
+    ID_subject_XX_63 --> Data_mono_person_hdf5_64
+    Data_mono_person_hdf5_64["Data_mono_person.hdf5"]
+````
 
 ````bash
 │   Metadata_data_set.hdf5
