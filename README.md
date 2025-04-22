@@ -59,4 +59,5 @@ graph TD
     GT2D_METH --> GT2D_SUB["Sujet_XX"]
     GT2D_SUB --> GT2D_SESS["Session_XX"]
     GT2D_SESS --> GT2D_TASK["Tache_XX"]
-    GT2D_TASK --> GT2D_ID["ID_subject_XX"]````
+    GT2D_TASK --> GT2D_ID["ID_subject_XX"]
+````
