@@ -247,4 +247,22 @@ The data should be in the same format as the one used in the 02_Keypoints2D_mult
             |---dictionary name point to their corresponding indices in the keypoints array
             |---TODO list metadata
             \---TODO list metadata
+````
+
+## 04 Keypoints3D_monosubject
+
+One question here is on the use of which data format. The c3d format is a format very used in biomechanics which might make it harder to be used by other people from other domains such as computer vision. The hdf5 format is more general and could be used by other people. However, there is a some useful tool to visualize the c3d data which could be useful for the user.
+
+One solution could be to use the more general hdf5 format and to add a converter to convert the data from one format to another using a toolbox such as ezc3d. 
+
+````bash
+    |   Data_mono_person.hdf5
+        points_3D ==> 3xNb_Keypointxnb_frame float [x,y,z]
+    | 
+    \---metadata
+            |---dictionary name point to their corresponding indices in the keypoints array
+            |---TODO list metadata
+            \---TODO list metadata
+````
+Similar meta data should be contained in the metadata of the c3d file. 
 
