@@ -79,8 +79,6 @@ graph LR
 
 
 ````mermaid
-
-```mermaid
 graph LR
     C___0["C:."]
     C___0 --> Metadata_data_set_hdf5_1
