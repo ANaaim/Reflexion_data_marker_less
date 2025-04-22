@@ -1,4 +1,3 @@
-%% Arborescence du projet
 graph TD
     ROOT["<strong>project_root</strong>"]
 
