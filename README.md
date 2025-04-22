@@ -155,7 +155,7 @@ The depth will correspond to the number of folders that are in the path. In our 
 After a nested dictionary will be created to store the information about the subject, session and task allowing the user to access the information easily. 
 
 ### Philosophy of the data organisation 
-In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each "atomic" folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_Keypoints2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
+In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_Keypoints2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
 
 
 ## 00_Calibration video
@@ -266,3 +266,6 @@ One solution could be to use the more general hdf5 format and to add a converter
 ````
 Similar meta data should be contained in the metadata of the c3d file. 
 
+05-06 Ground_truth_3D and 2D
+The data here should have the same format as the one used in the Keypoints_3D subject and Keypoints_2D subject.
+The only difference is that in the 3D data the calibration matrix should be included in each leaf folder. 
