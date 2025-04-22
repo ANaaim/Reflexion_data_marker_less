@@ -224,6 +224,7 @@ These data should contains the different bbox detected and the keypoints detecte
     |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]  
     |
     \---metadata
+            |---dictionary name point to their corresponding indices in the keypoints array
             \---TODO list metadata
 ````
 
