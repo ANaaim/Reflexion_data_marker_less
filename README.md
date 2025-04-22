@@ -83,3 +83,71 @@ graph TD
     GT2D_ID --> GT2D_NPY["keypoints2d_gt.npy"]
     GT2D_ID --> GT2D_ANN["annotations.json"]
 ````
+
+
+
+````bash
+│   Metadata_data_set.hdf5
+│
+├───00_Calibration_video
+│   └───IDXX_calib
+│       │   calib_matrix.toml
+│       │
+│       ├───Extrinseque
+│       │   ├───cam_01
+│       │   ├───cam_02
+│       │   └───cam_n
+│       └───Intrinseque
+│           ├───cam_01
+│           ├───cam_02
+│           └───cam_n
+├───01_Data_video
+│   └───Sujet_XX
+│       └───Session_XX
+│           └───Tache_XX
+│               │   calib_mat.toml
+│               │
+│               └───cam_XX
+│                       cam_XX.avi
+│
+├───02_Keypoints2D_multisubject
+│   └───Methode_XX
+│       └───Sujet_XX
+│           └───Session_XX
+│               └───Tache_XX
+│                       Data_multi_person.hdf5
+│
+├───03_Keypoints2D_monosubject
+│   └───Methode_XX
+│       └───Sujet_XX
+│           └───Session_XX
+│               └───Tache_XX
+│                   └───ID_subject_XX
+│                           Data_mono_person.hdf5
+│
+├───04_Keypoints3D_monosubject
+│   └───Methode2D_XX_Methode_3D_XX
+│       └───Sujet_XX
+│           └───Session_XX
+│               └───Tache_XX
+│                   └───ID_subject_XX
+│                           Data_mono_person.c3d
+│                           Data_mono_person.hdf5
+│
+├───05_Ground_truth_3D
+│   └───Methode2D_XX_Methode_3D_XX
+│       └───Sujet_XX
+│           └───Session_XX
+│               └───Tache_XX
+│                   └───ID_subject_XX
+│                           Data_mono_person.c3d
+│                           Data_mono_person.hdf5
+│
+└───06_Ground_truth_2D
+    └───Methode_XX
+        └───Sujet_XX
+            └───Session_XX
+                └───Tache_XX
+                    └───ID_subject_XX
+                            Data_mono_person.hdf5
+````
