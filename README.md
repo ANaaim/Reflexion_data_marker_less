@@ -171,5 +171,28 @@ Same question as before. What codec should be used ==> contact teams from INRIA 
 
 The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
 
+### The calib_mat.toml file 
+Currently this is the file format that Alex is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
+
+````toml
+[cam_01]
+name = "M11139"
+size = [ 1920.0, 1080.0]
+matrix = [ [ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]
+distortions = [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338]
+rotation = [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191]
+translation = [ -0.6270525677142821, -0.486046176284735, 1.664813522720072]
+fisheye = false
+...
+[cam_XX]
+name = "cam_XX"
+size = [ 1920.0, 1080.0]
+matrix = [ [ 2144.9601175685557, 0.0, 967.859729904023], [ 0.0, 2156.5146368800865, 550.1781128465403], [ 0.0, 0.0, 1.0]]
+distortions = [ -0.09658154939711396, 0.11563585511085413, 0.0008519503575105665, 0.0028026774341342975]
+rotation = [ -0.8305202999790112, -1.891827398628365, 0.34774377648736793]
+translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
+fisheye = false
+````
+
 
 ## 02_Keypoints2D_multisubject
