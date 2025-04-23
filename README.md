@@ -88,15 +88,21 @@ It has been chosen to use for metadata without array to use the toml format. The
 This could be done also for the metadata with the data in hdf5, but it seems that it is better that the metadat to be embedded in the hdf5 file. As a result, it will be impossible to have the data without the metadata, as a result it should be always possible to process it and the file will be easier to share.
 
 ## 00_calibration video
+### Video format
 Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
 
-h.264 ? Is it lossless ?
-h.265 ? Is it lossless ?
+two solutions : 
+Codec : FFV1 format : .mkv / .avi 	
+or 
+Codec : H.264 lossless format : .mp4 / .mkv  (Use -qp 0 with libx264, but not always byte-identical)
 
+### The metadata_video.toml file
+Same meta data as for video format. 
 
 
 ## 01_data_video
 Same question as before. What codec should be used ==> contact teams from INRIA or from politechnique Montreal. 
+Is it expected that the video will be in raw and undistorted format ? Also question in the reorientation of the video. 
 
 The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
 
