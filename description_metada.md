@@ -11,7 +11,18 @@ depth = 3
 ```
 From there it will be easy to access all the data just using the dictionary keys, and to process automatically all the data. 
 
+## Medata video 
+These metadata are common to all the video files (00_calibration_data, 01_data_video)
 
+camera_ID: str 'camera_01'
+camera_model: str 'GoPro Hero 7'
+resolution:list[int] [widthxheight] in pixel
+frame_rate: int 30
+frame_count: int 1000
+compression_codec: str 'H.264'
+lossless: bool: True or False
+distorsion_model: str: 'pinhole',"fisheye
+undistort: bool: True or False
 
 ## 00_calibration_data
 
