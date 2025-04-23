@@ -51,22 +51,19 @@
     |                           Data_mono_person.hdf5
     |
     +---05_ground_truth_3D
-    |   \---Methode2D_XX_Methode_3D_XX
-    |       \---Sujet_XX
-    |           \---Session_XX
-    |               \---Tache_XX
-    |                   \---ID_subject_XX
-    |                           calib_matrix.toml
-    |                           Data_mono_person.c3d
-    |                           Data_mono_person.hdf5
+    |  \---Sujet_XX
+    |     \---Session_XX
+    |        \---Tache_XX
+    |               calib_matrix.toml
+    |               Data_mono_person.c3d
+    |               Data_mono_person.hdf5
     |
     \---06_ground_truth_keypoints_2D
-        \---Methode_XX
-            \---Sujet_XX
-                \---Session_XX
-                    \---Tache_XX
-                        \---ID_subject_XX
-                                Data_mono_person.hdf5
+       \---Sujet_XX
+            \---Session_XX
+                \---Tache_XX
+                    \---ID_subject_XX
+                            Data_mono_person.hdf5
 
 ````
 
@@ -91,7 +88,9 @@ This could be done also for the metadata with the data in hdf5, but it seems tha
 ### Video format
 Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
 
-two solutions : 
+These should be a recommendation on the codec and the video format that should be used. Indeed, sometime format are determined by the camera used. However, having guideline might be interesting for user not used to that kind of question. The codec should be a lossless codec and the video format should be a format that is easy to read and write.
+
+Two propositions (to validate with people from computer vision background) : 
 Codec : FFV1 format : .mkv / .avi 	
 or 
 Codec : H.264 lossless format : .mp4 / .mkv  (Use -qp 0 with libx264, but not always byte-identical)
@@ -141,23 +140,23 @@ These data should contains the different bbox detected and the keypoints detecte
     +--- cam_01
     |       |--- frame_01
     |       |       |---Id_XX
-    |       |               |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |       |        ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
     |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
     |       ...
     |       \+--- frame_XX
     |              |---Id_XX
-    |                      |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |               ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
     |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]                    
     ...
     +--- cam_XX
     |       |--- frame_01
     |       |       |---Id_XX
-    |       |               |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |       |        ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
     |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
     |       ...
     |       \+--- frame_XX
     |              |---Id_XX
-    |                      |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |               ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
     |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]  
     |
     \---metadata
@@ -193,8 +192,9 @@ One question here is on the use of which data format. The c3d format is a format
 One solution could be to use the more general hdf5 format and to add a converter to convert the data from one format to another using a toolbox such as ezc3d. 
 
 ````bash
-    |   Data_mono_person.hdf5
-        points_3D ==> 3xNb_Keypointxnb_frame float [x,y,z]
+Data_mono_person.hdf5
+    |
+    +---points_3D ==> 3xNb_Keypointxnb_frame float [x,y,z]
     | 
     \---metadata
             |---dictionary name point to their corresponding indices in the keypoints array

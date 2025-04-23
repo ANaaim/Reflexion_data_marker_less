@@ -111,6 +111,7 @@ If from_2D_data is False, we only used the metadata from the 01_data_video.
 | methode_name       | str    | 'weighted DDLT'/'RTMpose3d' |
 | methode_parameters | dict() | {}                          |
 
+
 #### description of the metadata
 - __from_2D_data__ : If the 3D keypoints are obtained from triangulated 2D data. If True, we should have a metadata for the triangulation in the HDF5 file.
 - __methode_name__ : Name of the method used to obtain the 3D keypoints. It can be 'weighted DDLT', 'RTMpose3d' or any other method used.
