@@ -17,21 +17,26 @@
     |                   cam_XX.avi
     |
     +---01_data_video
-    |   \---Sujet_XX
-    |       \---Session_XX
-    |           \---Tache_XX
-    |               |   calib_mat.toml
+    |   +---Sujet_XX
+    |   |    +---Session_XX
+    |   |        +---Tache_XX
+    |   ...         |   calib_mat.toml
     |               |   metadata_video.toml
     |               |
-    |               \---cam_XX
-    |                       cam_XX.avi
+    |               +---raw
+    |               |    \---cam_XX
+    |               |        cam_XX.avi
+    |               \---undistorted
+    |                    \---cam_XX
+    |                        cam_XX.avi
     |
     +---02_keypoints_2D_multisubject
-    |   \---Methode_XX
-    |       \---Sujet_XX
-    |           \---Session_XX
-    |               \---Tache_XX
-    |                       Data_multi_person.hdf5
+    |   |---Methode_XX
+    |   |   +---Sujet_XX
+    |   |       +---Session_XX
+    |   |           +---Tache_XX
+    |   |                   Data_multi_person.hdf5
+    |   ...
     |
     +---03_keypoints_2D_monosubject
     |   \---Methode_XX
@@ -76,39 +81,40 @@ The depth will correspond to the number of folders that are in the path. In our 
 After a nested dictionary will be created to store the information about the subject, session and task allowing the user to access the information easily. 
 
 ### Philosophy of the data organisation 
-In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_Keypoints2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
+In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
 
 ### File format 
 
-It has been chosen to use for metadata without array to use the toml format. The toml format is a format that is easy to read and write. It is also easy to parse and generate. However, for the data that are in array format, it has been chosen to use the hdf5 format. The hdf5 format is a format that is very used in the scientific community and that is easy to read and write. It is also easy to parse and generate.
-
-This could be done also for the metadata with the data in hdf5, but it seems that it is better that the metadat to be embedded in the hdf5 file. As a result, it will be impossible to have the data without the metadata, as a result it should be always possible to process it and the file will be easier to share.
+It has been chosen to use for metadata to use the toml format. The toml format is a format that is easy to read and write. It is also easy to parse and generate. However, for storing the data that are in array format, it has been chosen to use the hdf5 format. The hdf5 format is a format that is very used in the scientific community and that is easy to read and write. The hdf5 format is a binary format that is very efficient for storing large amount of data. It is also easy to compress and decompress. It has been chosen when hdf5 format is used to store the metadata in the hdf5 file to be sure that the metadata is available with the data and allow the hdf5 to be easily shared and processed on their own. 
 
 ## 00_calibration video
+
 ### Video format
 Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
 
-These should be a recommendation on the codec and the video format that should be used. Indeed, sometime format are determined by the camera used. However, having guideline might be interesting for user not used to that kind of question. The codec should be a lossless codec and the video format should be a format that is easy to read and write.
+These should be a recommendation on the codec and the video format that should be used. Indeed, sometime format are determined by the camera used. However, having guideline might be interesting for user not used to that kind of question such as in the biomechanics community. The codec should be a lossless codec and the video format should be a format that is easy to read and write.
 
 Two propositions (to validate with people from computer vision background) : 
-Codec : FFV1 format : .mkv / .avi 	
-or 
-Codec : H.264 lossless format : .mp4 / .mkv  (Use -qp 0 with libx264, but not always byte-identical)
+| Codec          | Format                                                              |
+| -------------- | ------------------------------------------------------------------- |
+| FFV1           | .mkv / .avi                                                         |
+| H.264 lossless | .mp4 / .mkv (Use -qp 0 with libx264, but not always byte-identical) |
+
 
 ### The metadata_video.toml file
-Same meta data as for video format. 
+See in the file description_metadata.md. 
 
 
 ## 01_data_video
-Same question as before. What codec should be used ==> contact teams from INRIA or from politechnique Montreal. 
 Is it expected that the video will be in raw and undistorted format ? Also question in the reorientation of the video. 
 
 The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
 
 ### The calib_mat.toml file 
-Currently this is the file format that Alex is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
+Currently this is the file format that LBMC is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
 
 It should be decided which is the more common format that should be used for describing the camera intrinsics and extrinsics matrix. Currently, it seems that it is the OpenCV format that is used which would seems one of the most common format. 
+
 
 ````toml
 [cam_01]
@@ -136,7 +142,8 @@ structure of the Data_multi_person.hdf5
 These data should contains the different bbox detected and the keypoints detected. The bbox should be in the format [x1, y1, x2, y2] where x1 and y1 are the coordinates of the top left corner and x2 and y2 are the coordinates of the bottom right corner. The keypoints should be in the format [x, y, conf] where x and y are the coordinates of the keypoint and conf is the confidence of the detection.
 
 ````bash
-    |   Data_multi_person.hdf5
+ Data_multi_person.hdf5
+    |
     +--- cam_01
     |       |--- frame_01
     |       |       |---Id_XX
@@ -159,7 +166,7 @@ These data should contains the different bbox detected and the keypoints detecte
     |               ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
     |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]  
     |
-    \---metadata
+    \--- metadata
             |---dictionary name point to their corresponding indices in the keypoints array
             \---TODO list metadata
 ````
@@ -203,6 +210,12 @@ Data_mono_person.hdf5
 ````
 Similar meta data should be contained in the metadata of the c3d file. 
 
-05-06 Ground_truth_3D and 2D
+## 05-06 Ground_truth_3D and 2D
+
 The data here should have the same format as the one used in the Keypoints_3D subject and Keypoints_2D subject.
-The only difference is that in the 3D data the calibration matrix should be included in each leaf folder. 
+The only difference is that in the 3D data the calibration matrix should be included in each leaf folder and do not have a specific folder for the method used to obtain the 3D keypoints. 
+
+An alternative proposition could be to integrate the ground truth data as a part of the 03_keypoints_2D_monosubject and 04_keypoints_3D_monosubject with a different methode name being "ground_truth_2D" and "ground_truth_3D".
+This would allow to have all the data in the same place and to be able to process them together.
+
+Both make sens and should be discussed with the team.
