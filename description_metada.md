@@ -52,25 +52,41 @@ Here the calib_matrix is not considered as a metadata, but as an individual data
 All this metadata are integrated into the HDF5 file.
 
 ### Calibration matrix
-| name        | type                         | Example                                                                                                                                                        |
-| ----------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| size        | list[int]                    | [ 1920, 1080]                                                                                                                                                  |
-| matrix      | list[list[float]] 3x3 matrix | [ [ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]                                              |
-| distortions | list[float]                  | [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338] ==> could be a list of 5 or 8 values depending on the model used. |
-| rotation    | list[float]                  | [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191]                                                                                                  |
-| translation | list[float]                  | [ -0.6270525677142821, -0.486046176284735, 1.664813522720072]                                                                                                  |
+| name        | type                         | Example       |
+| ----------- | ---------------------------- | ------------- |
+| size        | list[int]                    | [ 1920, 1080] |
+| matrix      | list[list[float]] 3x3 matrix |               |
+| distortions | list[float]                  |               |
+| rotation    | list[float]                  |               |
+| translation | list[float]                  |               |
 
+#### description of the metadata
+- __size__ : Correspond to the size of the image used 
+- __Matrix__ :
+- __distortions__ : Correspond to the distorsion coefficients used in the camera calibration. it can be a list of 5 or 14 values depending on the model used.
+- __rotation__ : 
+- __translation__ :
+  
 ### Metadata keypoint detection
 One of the problem here is that we have to deal with different methods used to detect the keypoints.The methods used does not have the same parameters. As a result we should only propose a common structure for the metadata to incite people to structure their metadata and to give them. 
 
-| name              | type | Example                | Description                                                                                                                                                      |
-| ----------------- | ---- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| methode_name      | str  | 'OpenPose'             | Name of the method used to detect the keypoints.                                                                                                                 |
-| method_parameters | dict | ....                   | A dictionary of parameters used to obtain the 2D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. |
-| bbox              | bool | True                   | Is bbox detected in the method used.                                                                                                                             |
-| keypoints_indice  | dict | {'nose': 0, 'neck': 1} | A dictionary of indices to name (or the opposite) to have the name of the keypoints in the array in the HDF5 file.                                               |
-| frame_per_second  | int  | 30                     | The frame rate of the processed point (can be different from the original video).                                                                                |
+| name              | type | Example                |
+| ----------------- | ---- | ---------------------- |
+| methode_name      | str  | 'OpenPose'             |
+| method_parameters | dict | ....                   |
+| bbox              | bool | True                   |
+| keypoints_indice  | dict | {'nose': 0, 'neck': 1} |
+| frame_per_second  | int  | 30                     |
 
+#### description of the metadata
+- __methode_name__ : Name of the method used to detect the keypoints. It can be 'OpenPose', 'AlphaPose', 'PoseNet', 'RTMpose2D' or any other method used.
+- __method_parameters__ : A dictionary of parameters used to obtain the 2D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
+  - threshold: float 0.5 : threshold used to filter the keypoints.
+  - bbox: bool True : if the method used detect the bbox or not.
+- __bbox__ : If the method used detect the bbox or not. If True, we should have a metadata for the bbox in the HDF5 file.
+- __keypoints_indice__ : A dictionary of indices to name (or the opposite) to have the name of the keypoints in the array in the HDF5 file. 
+- __frame_per_second__ : The frame rate of the processed point (can be different from the original video).
+- 
 ### Metadata video
 Probably all the former metada field from the 01_data_video should be integrated into the HDF5 file here under the 'video' group.
 ['video']
@@ -89,16 +105,18 @@ We use in it the same metadata as in the 02_keypoints_2D_multisubject if from_2D
 If from_2D_data is False, we only used the metadata from the 01_data_video.
 
 ### Metadata triangulation or Method used to obtain the 3D keypoints
-| name               | type   | example                     | description                                                                                                                                                                                                                                           |
-| ------------------ | ------ | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| from_2D_data       | bool   | True                        | If the 3D keypoints are obtained from triangulated 2D data                                                                                                                                                                                            |
-| methode_name       | str    | 'weighted DDLT'/'RTMpose3d' | Name of the method used to obtain the 3D keypoints.                                                                                                                                                                                                   |
-| methode_parameters | dict() | {}                          | A dictionary of parameters used to obtain the 3D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples: <br> - threshold: float 0.5 : threshold used to filter the keypoints. |
+| name               | type   | example                     |
+| ------------------ | ------ | --------------------------- |
+| from_2D_data       | bool   | True                        |
+| methode_name       | str    | 'weighted DDLT'/'RTMpose3d' |
+| methode_parameters | dict() | {}                          |
+
+#### description of the metadata
+- __from_2D_data__ : If the 3D keypoints are obtained from triangulated 2D data. If True, we should have a metadata for the triangulation in the HDF5 file.
+- __methode_name__ : Name of the method used to obtain the 3D keypoints. It can be 'weighted DDLT', 'RTMpose3d' or any other method used.
+- __methode_parameters__ : A dictionary of parameters used to obtain the 3D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
+  - threshold: float 0.5 : threshold used to filter the keypoints.
+  
 
 
-
-from_2D_data: bool True : If the 3D keypoints are obtained from triangulated 2D data
-methode_name: str 'weighted DDLT'/'RTMpose3d'
-methode_parameters: dict() : A dictionary of parameters used to obtain the 3D keypoints.These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
-    - threshold: float 0.5 : threshold used to filter the keypoints.
 
