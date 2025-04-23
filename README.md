@@ -1,7 +1,90 @@
 ## Data structure
+````mermaid
+graph LR
+    ROOT["<strong>project_root</strong>"]
+
+    %% Metadata global
+    ROOT --> META["Metadata_data_set.toml"]
+
+    %% 00 – Calibration
+    ROOT --> CALIB["00_calibration_data"]
+    CALIB --> CALIB_ID["IDXX_calib"]
+    CALIB_ID --> CALIB_MATRIX["calib_matrix.toml"]
+    CALIB_ID --> CALIB_META["metadata_video.toml"]
+
+    CALIB_ID --> EX["extrinsics"]
+    EX --> EX_CAM["cam_XX/"]
+    EX_CAM --> EX_AVI["cam_XX.avi"]
+
+    CALIB_ID --> IN["intrinsics"]
+    IN --> IN_CAM["cam_XX/"]
+    IN_CAM --> IN_AVI["cam_XX.avi"]
+
+    %% 01 – Data video
+    ROOT --> VIDEO["01_data_video"]
+    VIDEO --> V_SUB["Sujet_XX"]
+    V_SUB --> V_SESS["Session_XX"]
+    V_SESS --> V_TASK["Tache_XX"]
+    V_TASK --> V_CAL["calib_mat.toml"]
+    V_TASK --> V_META["metadata_video.toml"]
+
+    V_TASK --> V_RAW["raw"]
+    V_RAW --> V_RAW_CAM["cam_XX/"]
+    V_RAW_CAM --> V_RAW_AVI["cam_XX.avi"]
+
+    V_TASK --> V_UND["undistorted"]
+    V_UND --> V_UND_CAM["cam_XX/"]
+    V_UND_CAM --> V_UND_AVI["cam_XX.avi"]
+
+    %% 02 – Keypoints 2D multisubject
+    ROOT --> K2D_MULTI["02_keypoints_2D_multisubject"]
+    K2D_MULTI --> K2D_METH["Methode_XX"]
+    K2D_METH --> K2D_SUB["Sujet_XX"]
+    K2D_SUB --> K2D_SESS["Session_XX"]
+    K2D_SESS --> K2D_TASK["Tache_XX"]
+    K2D_TASK --> K2D_FILE["Data_multi_person.hdf5"]
+
+    %% 03 – Keypoints 2D monosubject
+    ROOT --> K2D_MONO["03_keypoints_2D_monosubject"]
+    K2D_MONO --> K2D_MONO_METH["Methode_XX"]
+    K2D_MONO_METH --> K2D_MONO_SUB["Sujet_XX"]
+    K2D_MONO_SUB --> K2D_MONO_SESS["Session_XX"]
+    K2D_MONO_SESS --> K2D_MONO_TASK["Tache_XX"]
+    K2D_MONO_TASK --> K2D_MONO_ID["ID_subject_XX"]
+    K2D_MONO_ID --> K2D_MONO_FILE["Data_mono_person.hdf5"]
+
+    %% 04 – Keypoints 3D monosubject
+    ROOT --> K3D_MONO["04_keypoints_3D_monosubject"]
+    K3D_MONO --> K3D_METH["Methode2D_XX_Methode_3D_XX"]
+    K3D_METH --> K3D_SUB["Sujet_XX"]
+    K3D_SUB --> K3D_SESS["Session_XX"]
+    K3D_SESS --> K3D_TASK["Tache_XX"]
+    K3D_TASK --> K3D_ID["ID_subject_XX"]
+    K3D_ID --> K3D_C3D["Data_mono_person.c3d"]
+    K3D_ID --> K3D_HDF5["Data_mono_person.hdf5"]
+
+    %% 05 – Ground-truth 3D
+    ROOT --> GT3D["05_ground_truth_3D"]
+    GT3D --> GT3D_SUB["Sujet_XX"]
+    GT3D_SUB --> GT3D_SESS["Session_XX"]
+    GT3D_SESS --> GT3D_TASK["Tache_XX"]
+    GT3D_TASK --> GT3D_CALIB["calib_matrix.toml"]
+    GT3D_TASK --> GT3D_C3D["Data_mono_person.c3d"]
+    GT3D_TASK --> GT3D_HDF5["Data_mono_person.hdf5"]
+
+    %% 06 – Ground-truth keypoints 2D
+    ROOT --> GT2D["06_ground_truth_keypoints_2D"]
+    GT2D --> GT2D_SUB["Sujet_XX"]
+    GT2D_SUB --> GT2D_SESS["Session_XX"]
+    GT2D_SESS --> GT2D_TASK["Tache_XX"]
+    GT2D_TASK --> GT2D_ID["ID_subject_XX"]
+    GT2D_ID --> GT2D_HDF5["Data_mono_person.hdf5"]
+````
+
 
 ````bash
-    |   Metadata_data_set.toml
+    | 
+    +---Metadata_data_set.toml
     |
     +---00_calibration_data
     |   \---IDXX_calib
@@ -94,7 +177,8 @@ Still a discussion to have on the codec and the video format that should be used
 
 These should be a recommendation on the codec and the video format that should be used. Indeed, sometime format are determined by the camera used. However, having guideline might be interesting for user not used to that kind of question such as in the biomechanics community. The codec should be a lossless codec and the video format should be a format that is easy to read and write.
 
-Two propositions (to validate with people from computer vision background) : 
+Two propositions (to validate with people from computer vision background) :
+
 | Codec          | Format                                                              |
 | -------------- | ------------------------------------------------------------------- |
 | FFV1           | .mkv / .avi                                                         |
