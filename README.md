@@ -81,7 +81,7 @@ graph LR
 ````bash
     |   Metadata_data_set.hdf5
     |
-    +---00_Calibration_video
+    +---00_calibration_video
     |   \---IDXX_calib
     |       |   calib_matrix.toml
     |       |
@@ -93,7 +93,7 @@ graph LR
     |           \---cam_XX
     |                   cam_XX.avi
     |
-    +---01_Data_video
+    +---01_data_video
     |   \---Sujet_XX
     |       \---Session_XX
     |           \---Tache_XX
@@ -102,14 +102,14 @@ graph LR
     |               \---cam_XX
     |                       cam_XX.avi
     |
-    +---02_Keypoints2D_multisubject
+    +---02_keypoints_2D_multisubject
     |   \---Methode_XX
     |       \---Sujet_XX
     |           \---Session_XX
     |               \---Tache_XX
     |                       Data_multi_person.hdf5
     |
-    +---03_Keypoints2D_monosubject
+    +---03_keypoints_2D_monosubject
     |   \---Methode_XX
     |       \---Sujet_XX
     |           \---Session_XX
@@ -117,7 +117,7 @@ graph LR
     |                   \---ID_subject_XX
     |                           Data_mono_person.hdf5
     |
-    +---04_Keypoints3D_monosubject
+    +---04_keypoints_3D_monosubject
     |   \---Methode2D_XX_Methode_3D_XX
     |       \---Sujet_XX
     |           \---Session_XX
@@ -126,7 +126,7 @@ graph LR
     |                           Data_mono_person.c3d
     |                           Data_mono_person.hdf5
     |
-    +---05_Ground_truth_3D
+    +---05_ground_truth_3D
     |   \---Methode2D_XX_Methode_3D_XX
     |       \---Sujet_XX
     |           \---Session_XX
@@ -136,7 +136,7 @@ graph LR
     |                           Data_mono_person.c3d
     |                           Data_mono_person.hdf5
     |
-    \---06_Ground_truth_2D
+    \---06_ground_truth_keypoints_2D
         \---Methode_XX
             \---Sujet_XX
                 \---Session_XX
@@ -158,7 +158,7 @@ After a nested dictionary will be created to store the information about the sub
 In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_Keypoints2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
 
 
-## 00_Calibration video
+## 00_calibration video
 Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
 
 h.264 ? Is it lossless ?
@@ -166,7 +166,7 @@ h.265 ? Is it lossless ?
 
 
 
-## 01_Data_video
+## 01_data_video
 Same question as before. What codec should be used ==> contact teams from INRIA or from politechnique Montreal. 
 
 The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
@@ -194,7 +194,7 @@ translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
 fisheye = false
 ````
 
-## 02_Keypoints2D_multisubject
+## 02_keypoints_2D_multisubject
 
 structure of the Data_multi_person.hdf5
 These data should contains the different bbox detected and the keypoints detected. The bbox should be in the format [x1, y1, x2, y2] where x1 and y1 are the coordinates of the top left corner and x2 and y2 are the coordinates of the bottom right corner. The keypoints should be in the format [x, y, conf] where x and y are the coordinates of the keypoint and conf is the confidence of the detection.
@@ -228,7 +228,7 @@ These data should contains the different bbox detected and the keypoints detecte
             \---TODO list metadata
 ````
 
-## 03_Keypoints2D_monosubject
+## 03_keypoints_2D_monosubject
 
 The data should be in the same format as the one used in the 02_Keypoints2D_multisubject. The only difference is that there is only one subject and one camera. 
 
@@ -249,7 +249,7 @@ The data should be in the same format as the one used in the 02_Keypoints2D_mult
             \---TODO list metadata
 ````
 
-## 04 Keypoints3D_monosubject
+## 04_keypoints_3D_monosubject
 
 One question here is on the use of which data format. The c3d format is a format very used in biomechanics which might make it harder to be used by other people from other domains such as computer vision. The hdf5 format is more general and could be used by other people. However, there is a some useful tool to visualize the c3d data which could be useful for the user.
 
