@@ -79,7 +79,7 @@ graph LR
 
 
 ````bash
-    |   Metadata_data_set.hdf5
+    |   Metadata_data_set.toml
     |
     +---00_calibration_video
     |   \---IDXX_calib
@@ -157,6 +157,11 @@ After a nested dictionary will be created to store the information about the sub
 ### Philosophy of the data organisation 
 In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_Keypoints2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
 
+### File format 
+
+It has been chosen to use for metadata without array to use the toml format. The toml format is a format that is easy to read and write. It is also easy to parse and generate. However, for the data that are in array format, it has been chosen to use the hdf5 format. The hdf5 format is a format that is very used in the scientific community and that is easy to read and write. It is also easy to parse and generate.
+
+This could be done also for the metadata with the data in hdf5, but it seems that it is better that the metadat to be embedded in the hdf5 file. As a result, it will be impossible to have the data without the metadata, as a result it should be always possible to process it and the file will be easier to share.
 
 ## 00_calibration video
 Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
