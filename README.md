@@ -81,9 +81,10 @@ graph LR
 ````bash
     |   Metadata_data_set.toml
     |
-    +---00_calibration_video
+    +---00_calibration_data
     |   \---IDXX_calib
     |       |   calib_matrix.toml
+    |       |   metadata_video.toml
     |       |
     |       +---extrinsics
     |       |   \---cam_XX
@@ -98,6 +99,7 @@ graph LR
     |       \---Session_XX
     |           \---Tache_XX
     |               |   calib_mat.toml
+    |               |   metadata_video.toml
     |               |
     |               \---cam_XX
     |                       cam_XX.avi
