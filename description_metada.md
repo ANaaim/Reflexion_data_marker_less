@@ -15,29 +15,30 @@ From there it will be easy to access all the data just using the dictionary keys
 These metadata are common to all the video files (00_calibration_data, 01_data_video)
 
 ### Non optional metadata
-| name              | type      | Example                 |
-| ----------------- | --------- | ----------------------- |
-| camera_ID         | str       | 'camera_01'             |
-| camera_model      | str       | 'GoPro Hero 7'          |
-| resolution        | list[int] | [widthxheight] in pixel |
-| frame_rate        | int       | 30                      |
-| frame_count       | int       | 1000                    |
-| compression_codec | str       | 'H.264'                 |
-| lossless          | bool      | True or False           |
-| distorsion_model  | str       | 'pinhole'/'fisheye'     |
-| undistort         | bool      | True or False           |
+| name              | type      | Example                 | optional |
+| ----------------- | --------- | ----------------------- | -------- |
+| camera_ID         | str       | 'camera_01'             |          |
+| camera_model      | str       | 'GoPro Hero 7'          |          |
+| resolution        | list[int] | [widthxheight] in pixel |          |
+| frame_rate        | int       | 30                      |          |
+| frame_count       | int       | 1000                    |          |
+| compression_codec | str       | 'H.264'                 |          |
+| video_format      | str       | 'mp4'                   |          |
+| lossless          | bool      | True or False           |          |
+| distorsion_model  | str       | 'pinhole'/'fisheye'     |          |
+| undistort         | bool      | True or False           |          |
 
 ### Optional metadata (but that could be good practice to have them for example in the case of publications)
-| name              | type        | Example              |
-| ----------------- | ----------- | -------------------- |
-| focal_lenght_mm   | float       | 4.5                  |
-| aperture_f_number | float 2.8   |
-| sensor_size_mm    | list[float] | [widthxheight] in mm |
-| shutter_speed     | float       | 1/60                 |
-| iso               | int         | 100                  |
-| gain_db           | float       | 0.0                  |
-| white_balance     | str         | 'auto'               |
-| lens_type         | str         | 'wide'               |
+| name              | type        | Example              | optional |
+| ----------------- | ----------- | -------------------- | -------- |
+| focal_lenght_mm   | float       | 4.5                  |          |
+| aperture_f_number | float 2.8   |                      |          |
+| sensor_size_mm    | list[float] | [widthxheight] in mm |          |
+| shutter_speed     | float       | 1/60                 |          |
+| iso               | int         | 100                  |          |
+| gain_db           | float       | 0.0                  |          |
+| white_balance     | str         | 'auto'               |          |
+| lens_type         | str         | 'wide'               |          |
 
 
 ## 00_calibration_data
@@ -52,31 +53,34 @@ Here the calib_matrix is not considered as a metadata, but as an individual data
 All this metadata are integrated into the HDF5 file.
 
 ### Calibration matrix
-| name        | type                         | Example       |
-| ----------- | ---------------------------- | ------------- |
-| size        | list[int]                    | [ 1920, 1080] |
-| matrix      | list[list[float]] 3x3 matrix |               |
-| distortions | list[float]                  |               |
-| rotation    | list[float]                  |               |
-| translation | list[float]                  |               |
+| name        | type                         | Example       | optional |
+| ----------- | ---------------------------- | ------------- | -------- |
+| size        | list[int]                    | [ 1920, 1080] |          |
+| matrix      | list[list[float]] 3x3 matrix |               |          |
+| distortions | list[float]                  |               |          |
+| rotation    | list[float]                  |               |          |
+| translation | list[float]                  |               |          |
+| fisheye     | bool                         | True/False    |          |
 
 #### description of the metadata
 - __size__ : Correspond to the size of the image used 
-- __Matrix__ :
-- __distortions__ : Correspond to the distorsion coefficients used in the camera calibration. it can be a list of 5 or 14 values depending on the model used.
-- __rotation__ : 
-- __translation__ :
-  
+- __Matrix__ : example [[ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]
+- __distortions__ : Correspond to the distorsion coefficients used in the camera calibration. it can be a list of 5 or 14 values depending on the model used. example :  [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338]
+- __rotation__ : example [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191] : rotation of the camera in the world coordinate system.
+- __translation__ : example [ -0.6270525677142821, -0.486046176284735, 1.664813522720072] : translation of the camera in the world coordinate system.
+- __fisheye__ : If the camera is a fisheye camera or not. If True, we should have a metadata for the fisheye in the HDF5 file.
+==> What are the metadata to add for the fisheye camera ?
+
 ### Metadata keypoint detection
 One of the problem here is that we have to deal with different methods used to detect the keypoints.The methods used does not have the same parameters. As a result we should only propose a common structure for the metadata to incite people to structure their metadata and to give them. 
 
-| name              | type | Example                |
-| ----------------- | ---- | ---------------------- |
-| methode_name      | str  | 'OpenPose'             |
-| method_parameters | dict | ....                   |
-| bbox              | bool | True                   |
-| keypoints_indice  | dict | {'nose': 0, 'neck': 1} |
-| frame_per_second  | int  | 30                     |
+| name              | type | Example                | optional |
+| ----------------- | ---- | ---------------------- | -------- |
+| methode_name      | str  | 'OpenPose'             |          |
+| method_parameters | dict | ....                   |          |
+| bbox              | bool | True                   |          |
+| keypoints_indice  | dict | {'nose': 0, 'neck': 1} |          |
+| frame_per_second  | int  | 30                     |          |
 
 #### description of the metadata
 - __methode_name__ : Name of the method used to detect the keypoints. It can be 'OpenPose', 'AlphaPose', 'PoseNet', 'RTMpose2D' or any other method used.
@@ -105,11 +109,11 @@ We use in it the same metadata as in the 02_keypoints_2D_multisubject if from_2D
 If from_2D_data is False, we only used the metadata from the 01_data_video.
 
 ### Metadata triangulation or Method used to obtain the 3D keypoints
-| name               | type   | example                     |
-| ------------------ | ------ | --------------------------- |
-| from_2D_data       | bool   | True                        |
-| methode_name       | str    | 'weighted DDLT'/'RTMpose3d' |
-| methode_parameters | dict() | {}                          |
+| name               | type   | example                     | optional |
+| ------------------ | ------ | --------------------------- | -------- |
+| from_2D_data       | bool   | True                        |          |
+| methode_name       | str    | 'weighted DDLT'/'RTMpose3d' |          |
+| methode_parameters | dict() | {}                          |          |
 
 
 #### description of the metadata
