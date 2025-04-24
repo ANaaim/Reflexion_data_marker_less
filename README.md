@@ -156,10 +156,10 @@ graph LR
 ## Global comment
 
 ### Structure of the data
-The part in the structure where we found subject_XX, session_XX and trial_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and trial is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : depth and different dictionaries. 
+The part in the structure where we found subject_XX, session_XX and trial_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and trial is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : **folder_depth** and different nested dictionaries. The **folder_depth** will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the trial which will correspond to a **folder_depth** of 3.
+After a nested dictionary will be created to store the information about the subject, session and trial allowing the user to access the information easily.
 
-The depth will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the trial which will correspond to the depth 3.
-After a nested dictionary will be created to store the information about the subject, session and trial allowing the user to access the information easily. 
+**folder_depth** might not be the best name for this, as **depth** might be enough and largely used in the community. However, as we can use RGB-D camera precising that we are talking about the folder might avoid some confusion. 
 
 ### Philosophy of the data organisation 
 In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_data_video folder or do any annoying copy and paste. 
