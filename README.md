@@ -1,84 +1,80 @@
-## Data structure
+## data structure
 ````mermaid
 graph LR
     ROOT["<strong>project_root</strong>"]
 
-    %% Metadata global
+    %% Global metadata
     ROOT --> META["Metadata_data_set.toml"]
 
-    %% 00 – Calibration
+    %% 00 – Calibration data
     ROOT --> CALIB["00_calibration_data"]
     CALIB --> CALIB_ID["IDXX_calib"]
-    CALIB_ID --> CALIB_MATRIX["calib_matrix.toml"]
+    CALIB_ID --> CALIB_MAT["calib_matrix.toml"]
     CALIB_ID --> CALIB_META["metadata_video.toml"]
-
     CALIB_ID --> EX["extrinsics"]
     EX --> EX_CAM["cam_XX/"]
     EX_CAM --> EX_AVI["cam_XX.avi"]
-
     CALIB_ID --> IN["intrinsics"]
     IN --> IN_CAM["cam_XX/"]
     IN_CAM --> IN_AVI["cam_XX.avi"]
 
     %% 01 – Data video
     ROOT --> VIDEO["01_data_video"]
-    VIDEO --> V_SUB["Sujet_XX"]
-    V_SUB --> V_SESS["Session_XX"]
-    V_SESS --> V_TASK["Tache_XX"]
-    V_TASK --> V_CAL["calib_mat.toml"]
-    V_TASK --> V_META["metadata_video.toml"]
-
-    V_TASK --> V_RAW["raw"]
-    V_RAW --> V_RAW_CAM["cam_XX/"]
-    V_RAW_CAM --> V_RAW_AVI["cam_XX.avi"]
-
-    V_TASK --> V_UND["undistorted"]
-    V_UND --> V_UND_CAM["cam_XX/"]
-    V_UND_CAM --> V_UND_AVI["cam_XX.avi"]
+    VIDEO --> V_SUB["subject_XX"]
+    V_SUB --> V_SESS["session_XX"]
+    V_SESS --> V_TRIAL["trial_XX"]
+    V_TRIAL --> V_TRIAL_CAL["calib_mat.toml"]
+    V_TRIAL --> V_TRIAL_META["metadata_video.toml"]
+    V_TRIAL --> RAW["raw"]
+    RAW --> RAW_CAM["cam_XX/"]
+    RAW_CAM --> RAW_AVI["cam_XX.avi"]
+    V_TRIAL --> UND["undistorted"]
+    UND --> UND_CAM["cam_XX/"]
+    UND_CAM --> UND_AVI["cam_XX.avi"]
 
     %% 02 – Keypoints 2D multisubject
     ROOT --> K2D_MULTI["02_keypoints_2D_multisubject"]
-    K2D_MULTI --> K2D_METH["Methode_XX"]
-    K2D_METH --> K2D_SUB["Sujet_XX"]
-    K2D_SUB --> K2D_SESS["Session_XX"]
-    K2D_SESS --> K2D_TASK["Tache_XX"]
-    K2D_TASK --> K2D_FILE["Data_multi_person.hdf5"]
+    K2D_MULTI --> K2D_METHOD["method_XX"]
+    K2D_METHOD --> K2D_SUB["subject_XX"]
+    K2D_SUB --> K2D_SESS["session_XX"]
+    K2D_SESS --> K2D_TRIAL["trial_XX"]
+    K2D_TRIAL --> K2D_FILE["data_multi_person.hdf5"]
 
     %% 03 – Keypoints 2D monosubject
     ROOT --> K2D_MONO["03_keypoints_2D_monosubject"]
-    K2D_MONO --> K2D_MONO_METH["Methode_XX"]
-    K2D_MONO_METH --> K2D_MONO_SUB["Sujet_XX"]
-    K2D_MONO_SUB --> K2D_MONO_SESS["Session_XX"]
-    K2D_MONO_SESS --> K2D_MONO_TASK["Tache_XX"]
-    K2D_MONO_TASK --> K2D_MONO_ID["ID_subject_XX"]
-    K2D_MONO_ID --> K2D_MONO_FILE["Data_mono_person.hdf5"]
+    K2D_MONO --> K2D_MONO_METHOD["method_XX"]
+    K2D_MONO_METHOD --> K2D_MONO_SUB["subject_XX"]
+    K2D_MONO_SUB --> K2D_MONO_SESS["session_XX"]
+    K2D_MONO_SESS --> K2D_MONO_TRIAL["trial_XX"]
+    K2D_MONO_TRIAL --> K2D_MONO_ID["ID_subject_XX"]
+    K2D_MONO_ID --> K2D_MONO_FILE["data_mono_person.hdf5"]
 
     %% 04 – Keypoints 3D monosubject
     ROOT --> K3D_MONO["04_keypoints_3D_monosubject"]
-    K3D_MONO --> K3D_METH["Methode2D_XX_Methode_3D_XX"]
-    K3D_METH --> K3D_SUB["Sujet_XX"]
-    K3D_SUB --> K3D_SESS["Session_XX"]
-    K3D_SESS --> K3D_TASK["Tache_XX"]
-    K3D_TASK --> K3D_ID["ID_subject_XX"]
-    K3D_ID --> K3D_C3D["Data_mono_person.c3d"]
-    K3D_ID --> K3D_HDF5["Data_mono_person.hdf5"]
+    K3D_MONO --> K3D_METHOD["method_2D_XX_method_3D_XX"]
+    K3D_METHOD --> K3D_SUB["subject_XX"]
+    K3D_SUB --> K3D_SESS["session_XX"]
+    K3D_SESS --> K3D_TRIAL["trial_XX"]
+    K3D_TRIAL --> K3D_ID["ID_subject_XX"]
+    K3D_ID --> K3D_C3D["data_mono_person.c3d"]
+    K3D_ID --> K3D_HDF5["data_mono_person.hdf5"]
 
-    %% 05 – Ground-truth 3D
+    %% 05 – Ground truth 3D
     ROOT --> GT3D["05_ground_truth_3D"]
-    GT3D --> GT3D_SUB["Sujet_XX"]
-    GT3D_SUB --> GT3D_SESS["Session_XX"]
-    GT3D_SESS --> GT3D_TASK["Tache_XX"]
-    GT3D_TASK --> GT3D_CALIB["calib_matrix.toml"]
-    GT3D_TASK --> GT3D_C3D["Data_mono_person.c3d"]
-    GT3D_TASK --> GT3D_HDF5["Data_mono_person.hdf5"]
+    GT3D --> GT3D_SUB["subject_XX"]
+    GT3D_SUB --> GT3D_SESS["session_XX"]
+    GT3D_SESS --> GT3D_TRIAL["trial_XX"]
+    GT3D_TRIAL --> GT3D_CAL["calib_matrix.toml"]
+    GT3D_TRIAL --> GT3D_C3D["data_mono_person.c3d"]
+    GT3D_TRIAL --> GT3D_HDF5["data_mono_person.hdf5"]
 
-    %% 06 – Ground-truth keypoints 2D
+    %% 06 – Ground truth keypoints 2D
     ROOT --> GT2D["06_ground_truth_keypoints_2D"]
-    GT2D --> GT2D_SUB["Sujet_XX"]
-    GT2D_SUB --> GT2D_SESS["Session_XX"]
-    GT2D_SESS --> GT2D_TASK["Tache_XX"]
-    GT2D_TASK --> GT2D_ID["ID_subject_XX"]
-    GT2D_ID --> GT2D_HDF5["Data_mono_person.hdf5"]
+    GT2D --> GT2D_SUB["subject_XX"]
+    GT2D_SUB --> GT2D_SESS["session_XX"]
+    GT2D_SESS --> GT2D_TRIAL["trial_XX"]
+    GT2D_TRIAL --> GT2D_ID["ID_subject_XX"]
+    GT2D_ID --> GT2D_HDF5["data_mono_person.hdf5"]
 ````
 
 
@@ -100,9 +96,9 @@ graph LR
     |                   cam_XX.avi
     |
     +---01_data_video
-    |   +---Sujet_XX
-    |   |    +---Session_XX
-    |   |        +---Tache_XX
+    |   +---subject_XX
+    |   |    +---session_XX
+    |   |        +---trial_XX
     |   ...         |   calib_mat.toml
     |               |   metadata_video.toml
     |               |
@@ -114,57 +110,59 @@ graph LR
     |                        cam_XX.avi
     |
     +---02_keypoints_2D_multisubject
-    |   |---Methode_XX
-    |   |   +---Sujet_XX
-    |   |       +---Session_XX
-    |   |           +---Tache_XX
-    |   |                   Data_multi_person.hdf5
+    |   |---method_XX
+    |   |   +---subject_XX
+    |   |       +---session_XX
+    |   |           +---trial_XX
+    |   |                   data_multi_person.hdf5
     |   ...
     |
     +---03_keypoints_2D_monosubject
-    |   \---Methode_XX
-    |       \---Sujet_XX
-    |           \---Session_XX
-    |               \---Tache_XX
-    |                   \---ID_subject_XX
-    |                           Data_mono_person.hdf5
-    |
+    |   |---method_XX
+    |   |   +---subject_XX
+    |   |       +---session_XX
+    |   |           +---trial_XX
+    |   |                +---ID_subject_XX
+    |   |                        data_mono_person.hdf5
+    |   ...
+    |   
     +---04_keypoints_3D_monosubject
-    |   \---Methode2D_XX_Methode_3D_XX
-    |       \---Sujet_XX
-    |           \---Session_XX
-    |               \---Tache_XX
-    |                   \---ID_subject_XX
-    |                           Data_mono_person.c3d
-    |                           Data_mono_person.hdf5
+    |   +---method_2D_XX_method_3D_XX
+    |   |   +---subject_XX
+    |   |       +---session_XX
+    |   |           +---trial_XX
+    |   |                +---ID_subject_XX
+    |   |                        data_mono_person.c3d
+    |   |                        data_mono_person.hdf5
+    |   ...
     |
     +---05_ground_truth_3D
-    |  \---Sujet_XX
-    |     \---Session_XX
-    |        \---Tache_XX
-    |               calib_matrix.toml
-    |               Data_mono_person.c3d
-    |               Data_mono_person.hdf5
+    |   +---subject_XX
+    |   |    +---session_XX
+    |   |        +---trial_XX
+    |   |            calib_matrix.toml
+    |   |            data_mono_person.c3d
+    |   |            data_mono_person.hdf5
+    |   ...
     |
     \---06_ground_truth_keypoints_2D
-       \---Sujet_XX
-            \---Session_XX
-                \---Tache_XX
-                    \---ID_subject_XX
-                            Data_mono_person.hdf5
-
+        +---subject_XX
+        |    +---session_XX
+        |        +---trial_XX
+        |            data_mono_person.hdf5
+        ...
 ````
 
 ## Global comment
 
 ### Structure of the data
-The part in the structure where we found Sujet_XX, Session_XX and Tache_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and task is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : depth and different dictionaries. 
+The part in the structure where we found subject_XX, session_XX and trial_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and trial is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : depth and different dictionaries. 
 
-The depth will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the task which will correspond to the depth 3.
-After a nested dictionary will be created to store the information about the subject, session and task allowing the user to access the information easily. 
+The depth will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the trial which will correspond to the depth 3.
+After a nested dictionary will be created to store the information about the subject, session and trial allowing the user to access the information easily. 
 
 ### Philosophy of the data organisation 
-In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_Data_video folder or do any annoying copy and paste. 
+In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_data_video folder or do any annoying copy and paste. 
 
 ### File format 
 
@@ -174,6 +172,8 @@ It has been chosen to use for metadata to use the toml format. The toml format i
 
 ### Video format
 Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
+
+The organisation where in the leaf folder we have the video file inside a folder with the name of the camera is keeped as sometime the data can be exported as images and necessitate to have a folder to store the images in a clean manner. In addition, some software such as theia are using such a structure to store the data.
 
 These should be a recommendation on the codec and the video format that should be used. Indeed, sometime format are determined by the camera used. However, having guideline might be interesting for user not used to that kind of question such as in the biomechanics community. The codec should be a lossless codec and the video format should be a format that is easy to read and write.
 
@@ -190,9 +190,14 @@ See in the file description_metadata.md.
 
 
 ## 01_data_video
-Is it expected that the video will be in raw and undistorted format ? Also question in the reorientation of the video. 
+The video organisation is similar to the one used in the 00_calibration_data.
 
+Somes questions to be asked here :
+    - Is it expected that the video will be in raw and undistorted format ? 
+    - Should the video be reorientation there. 
+    
 The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
+
 
 ### The calib_mat.toml file 
 Currently this is the file format that LBMC is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
@@ -222,11 +227,11 @@ fisheye = false
 
 ## 02_keypoints_2D_multisubject
 
-structure of the Data_multi_person.hdf5
+### data_multi_person.hdf5
 These data should contains the different bbox detected and the keypoints detected. The bbox should be in the format [x1, y1, x2, y2] where x1 and y1 are the coordinates of the top left corner and x2 and y2 are the coordinates of the bottom right corner. The keypoints should be in the format [x, y, conf] where x and y are the coordinates of the keypoint and conf is the confidence of the detection.
 
 ````bash
- Data_multi_person.hdf5
+ data_multi_person.hdf5
     |
     +--- cam_01
     |       |--- frame_01
@@ -260,7 +265,7 @@ These data should contains the different bbox detected and the keypoints detecte
 The data should be in the same format as the one used in the 02_Keypoints2D_multisubject. The only difference is that there is only one subject and one camera. 
 
 ````bash
-    |   Data_mono_person.hdf5
+    |   data_mono_person.hdf5
     +--- cam_01
     |      \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence]
     |
@@ -283,7 +288,7 @@ One question here is on the use of which data format. The c3d format is a format
 One solution could be to use the more general hdf5 format and to add a converter to convert the data from one format to another using a toolbox such as ezc3d. 
 
 ````bash
-Data_mono_person.hdf5
+data_mono_person.hdf5
     |
     +---points_3D ==> 3xNb_Keypointxnb_frame float [x,y,z]
     | 
@@ -299,7 +304,7 @@ Similar meta data should be contained in the metadata of the c3d file.
 The data here should have the same format as the one used in the Keypoints_3D subject and Keypoints_2D subject.
 The only difference is that in the 3D data the calibration matrix should be included in each leaf folder and do not have a specific folder for the method used to obtain the 3D keypoints. 
 
-An alternative proposition could be to integrate the ground truth data as a part of the 03_keypoints_2D_monosubject and 04_keypoints_3D_monosubject with a different methode name being "ground_truth_2D" and "ground_truth_3D".
+An alternative proposition could be to integrate the ground truth data as a part of the 03_keypoints_2D_monosubject and 04_keypoints_3D_monosubject with a different method name being "ground_truth_2D" and "ground_truth_3D".
 This would allow to have all the data in the same place and to be able to process them together.
 
 Both make sens and should be discussed with the team.
