@@ -114,7 +114,7 @@ graph LR
     |   |   +---subject_XX
     |   |       +---session_XX
     |   |           +---trial_XX
-    |   |                   data_multi_person.hdf5
+    |   |                   data_multisubject.hdf5
     |   ...
     |
     +---03_keypoints_2D_monosubject
@@ -123,7 +123,7 @@ graph LR
     |   |       +---session_XX
     |   |           +---trial_XX
     |   |                +---ID_subject_XX
-    |   |                        data_mono_person.hdf5
+    |   |                        data_monosubject.hdf5
     |   ...
     |   
     +---04_keypoints_3D_monosubject
@@ -296,8 +296,8 @@ data_mono_person.hdf5
     | 
     \---metadata
             |---dictionary name point to their corresponding indices in the keypoints array
-            |---TODO list metadata
-            \---TODO list metadata
+            |---TODO list metadata cf description_metadata.md
+            \---TODO list metadata cf description_metadata.md
 ````
 Similar meta data should be contained in the metadata of the c3d file. 
 
