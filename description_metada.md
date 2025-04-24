@@ -136,8 +136,8 @@ If from_2D_data is False, we only used the metadata from the 01_data_video.
 
 
 #### description of the metadata
-- **from_2D_data** : If the 3D keypoints are obtained from triangulated 2D data. If True, we should have a metadata for the triangulation in the HDF5 file.
+- **from_2D_data** : If the 3D keypoints are obtained from triangulated 2D data or from a lifting method from 2D to 3D. If True, it is a triangulation . If False, it is a lifting method from 2D to 3D. 
 - **methode_name** : Name of the method used to obtain the 3D keypoints. It can be 'weighted DDLT', 'RTMpose3d' or any other method used.
 - **methode_parameters** : A dictionary of parameters used to obtain the 3D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
   - threshold: float 0.5 : threshold used to filter the keypoints.
-
+  - this will depend on the method used. 
