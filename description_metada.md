@@ -20,7 +20,7 @@ Here there will be metadata for the processing of the data set and other that wo
 | ------------------ | --------- | -------- | -------------------------------------------------------------------- |
 | data_set_name      | str       |          | 'my_data_set'                                                        |
 | data_set_version   | str       |          | '1.0'                                                                |
-| depth              | int       |          | 3                                                                    |
+| folder_depth       | int       |          | 3                                                                    |
 | forlder_roles      | list[str] |          | ['subject', 'session', 'trial']                                      |
 | data_set_structure | dict      |          | {'subject_01': {'session_01': ['trial_01', 'trial_02', 'trial_03']}} |
 | license            | str       |          | 'CC-BY-NC'                                                           |
@@ -32,33 +32,32 @@ These metadata are common to all the video files (00_calibration_data, 01_data_v
 
 ### Metadata processing
 
-| name              | type      | Example                 | optional |
-| ----------------- | --------- | ----------------------- | -------- |
-| camera_ID         | str       | 'camera_01'             |          |
-| camera_model      | str       | 'GoPro Hero 7'          |          |
-| resolution        | list[int] | [widthxheight] in pixel |          |
-| frame_rate        | int       | 30                      |          |
-| frame_count       | int       | 1000                    |          |
-| compression_codec | str       | 'H.264'                 |          |
-| video_format      | str       | 'mp4'                   |          |
-| lossless          | bool      | True or False           |          |
-| distorsion_model  | str       | 'pinhole'/'fisheye'     |          |
-| undistort         | bool      | True or False           |          |
+| name              | type      | optional | examplel                |
+| ----------------- | --------- | -------- | ----------------------- |
+| camera_ID         | str       |          | 'camera_01'             |
+| camera_model      | str       |          | 'GoPro Hero 7'          |
+| resolution        | list[int] |          | [widthxheight] in pixel |
+| frame_rate        | int       |          | 30                      |
+| frame_count       | int       |          | 1000                    |
+| compression_codec | str       |          | 'H.264'                 |
+| video_format      | str       |          | 'mp4'                   |
+| lossless          | bool      |          | True or False           |
+| distorsion_model  | str       |          | 'pinhole'/'fisheye'     |
+| undistort         | bool      |          | True or False           |
 
 ### Metadata camera hardware (but that could be good practice to have them for example in the case of publications)
 These metadata might not be always necessary but could be a good practice to have them.
 
-| name              | type        | Example              | optional |
-| ----------------- | ----------- | -------------------- | -------- |
-| focal_lenght_mm   | float       | 4.5                  |          |
-| aperture_f_number | float 2.8   |                      |          |
-| sensor_size_mm    | list[float] | [widthxheight] in mm |          |
-| shutter_speed     | float       | 1/60                 |          |
-| iso               | int         | 100                  |          |
-| gain_db           | float       | 0.0                  |          |
-| white_balance     | str         | 'auto'               |          |
-| lens_type         | str         | 'wide'               |          |
-
+| name              | type        | optional | Example              |
+| ----------------- | ----------- | -------- | -------------------- |
+| focal_lenght_mm   | float       |          | 4.5                  |
+| aperture_f_number | float 2.8   |          |                      |
+| sensor_size_mm    | list[float] |          | [widthxheight] in mm |
+| shutter_speed     | float       |          | 1/60                 |
+| iso               | int         |          | 100                  |
+| gain_db           | float       |          | 0.0                  |
+| white_balance     | str         |          | 'auto'               |
+| lens_type         | str         |          | 'wide'               |
 
 ## 00_calibration_data
 cf metadata video.
@@ -73,14 +72,14 @@ All this metadata are integrated into the HDF5 file.
 
 ### Metadata calibration matrix
 
-| name        | type                         | Example       | optional |
-| ----------- | ---------------------------- | ------------- | -------- |
-| size        | list[int]                    | [ 1920, 1080] |          |
-| matrix      | list[list[float]] 3x3 matrix |               |          |
-| distortions | list[float]                  |               |          |
-| rotation    | list[float]                  |               |          |
-| translation | list[float]                  |               |          |
-| fisheye     | bool                         | True/False    |          |
+| name        | type                         | Optional | Example       |
+| ----------- | ---------------------------- | -------- | ------------- |
+| size        | list[int]                    |          | [ 1920, 1080] |
+| matrix      | list[list[float]] 3x3 matrix |          |               |
+| distortions | list[float]                  |          |               |
+| rotation    | list[float]                  |          |               |
+| translation | list[float]                  |          |               |
+| fisheye     | bool                         |          | True/False    |
 
 #### description of the metadata
 - **size** : Correspond to the size of the image used 
@@ -94,13 +93,13 @@ All this metadata are integrated into the HDF5 file.
 ### Metadata keypoint detection
 One of the problem here is that we have to deal with different methods used to detect the keypoints.The methods used does not have the same parameters. As a result we should only propose a common structure for the metadata to incite people to structure their metadata and to give them. 
 
-| name              | type | Example                | optional |
-| ----------------- | ---- | ---------------------- | -------- |
-| methode_name      | str  | 'OpenPose'             |          |
-| method_parameters | dict | ....                   |          |
-| bbox              | bool | True                   |          |
-| keypoints_indice  | dict | {'nose': 0, 'neck': 1} |          |
-| frame_per_second  | int  | 30                     |          |
+| name              | type | optional | Example                |
+| ----------------- | ---- | -------- | ---------------------- |
+| methode_name      | str  |          | 'OpenPose'             |
+| method_parameters | dict |          | ....                   |
+| bbox              | bool |          | True                   |
+| keypoints_indice  | dict |          | {'nose': 0, 'neck': 1} |
+| frame_per_second  | int  |          | 30                     |
 
 #### description of the metadata
 - **methode_name** : Name of the method used to detect the keypoints. It can be 'OpenPose', 'AlphaPose', 'PoseNet', 'RTMpose2D' or any other method used.
@@ -128,11 +127,11 @@ We use in it the same metadata as in the 02_keypoints_2D_multisubject if from_2D
 If from_2D_data is False, we only used the metadata from the 01_data_video.
 
 ### Metadata triangulation or Method used to obtain the 3D keypoints
-| name               | type   | example                     | optional |
-| ------------------ | ------ | --------------------------- | -------- |
-| from_2D_data       | bool   | True                        |          |
-| methode_name       | str    | 'weighted DDLT'/'RTMpose3d' |          |
-| methode_parameters | dict() | {}                          |          |
+| name               | type   | optional | Example                     |
+| ------------------ | ------ | -------- | --------------------------- |
+| from_2D_data       | bool   |          | True                        |
+| methode_name       | str    |          | 'weighted DDLT'/'RTMpose3d' |
+| methode_parameters | dict() |          | {}                          |
 
 
 #### description of the metadata
