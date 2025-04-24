@@ -107,6 +107,7 @@ One of the problem here is that we have to deal with different methods used to d
 - **method_parameters** : A dictionary of parameters used to obtain the 2D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
   - threshold: float 0.5 : threshold used to filter the keypoints.
   - bbox: bool True : if the method used detect the bbox or not.
+  - data_set_training: str 'COCO' : data set used to train the model if available.
 - **bbox** : If the method used detect the bbox or not.
 - **keypoints_indice** : A dictionary of indices to name (or the opposite) to have the name of the keypoints in the array in the HDF5 file. 
 - **frame_per_second** : The frame rate of the processed point (can be different from the original video).

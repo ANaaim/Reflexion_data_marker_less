@@ -247,13 +247,13 @@ These data should contains the different bbox detected and the keypoints detecte
     +--- cam_XX
     |       |--- frame_01
     |       |       |---Id_XX
-    |       |        ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |       |        ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN, NaN, NaN]
     |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
     |       ...
     |       \+--- frame_XX
     |              |---Id_XX
     |               ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
-    |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]  
+    |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN,NaN,NaN]  
     |
     \--- metadata
             |---dictionary name point to their corresponding indices in the keypoints array
@@ -267,18 +267,20 @@ The data should be in the same format as the one used in the 02_Keypoints2D_mult
 ````bash
     |   data_mono_person.hdf5
     +--- cam_01
-    |      \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence]
+    |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
+    |       \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence,n] if no keypoint detected [NaN, NaN,NaN,i]
     |
     ...
     +--- cam_XX
-    |      \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence]
+    |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
+    |       \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN,i]
     |
     |
     \---metadata
             |---Calib_matrix
             |---dictionary name point to their corresponding indices in the keypoints array
-            |---TODO list metadata
-            \---TODO list metadata
+            |---TODO list metadata cf description_metadata.md
+            \---TODO list metadata cf description_metadata.md
 ````
 
 ## 04_keypoints_3D_monosubject
