@@ -1,4 +1,6 @@
-## Data set metadata 
+# Metadata description
+
+## Metadata data set 
 depth : correspond to the number of nested folders before going to the data folder. Each depth will correspond to a type of analysis, could be a subject, session or trial in any order. 
 
 then the complete data set will be describe using a series of nested dictionaries. Example: 
@@ -25,10 +27,11 @@ Here there will be metadata for the processing of the data set and other that wo
 | creator            | dict      |          | {name="bitex", orcid="…", email="…"}                                 |
 | description        | str       |          | 'This is a test data set'                                            |
 
-## Medata video 
+## Metadata video 
 These metadata are common to all the video files (00_calibration_data, 01_data_video)
 
-### Basic metadata
+### Metadata processing
+
 | name              | type      | Example                 | optional |
 | ----------------- | --------- | ----------------------- | -------- |
 | camera_ID         | str       | 'camera_01'             |          |
@@ -42,7 +45,9 @@ These metadata are common to all the video files (00_calibration_data, 01_data_v
 | distorsion_model  | str       | 'pinhole'/'fisheye'     |          |
 | undistort         | bool      | True or False           |          |
 
-### Optional metadata (but that could be good practice to have them for example in the case of publications)
+### Metadata camera hardware (but that could be good practice to have them for example in the case of publications)
+These metadata might not be always necessary but could be a good practice to have them.
+
 | name              | type        | Example              | optional |
 | ----------------- | ----------- | -------------------- | -------- |
 | focal_lenght_mm   | float       | 4.5                  |          |
@@ -66,7 +71,8 @@ Here the calib_matrix is not considered as a metadata, but as an individual data
 ## 02_keypoints_2D_multisubject
 All this metadata are integrated into the HDF5 file.
 
-### Calibration matrix
+### Metadata calibration matrix
+
 | name        | type                         | Example       | optional |
 | ----------- | ---------------------------- | ------------- | -------- |
 | size        | list[int]                    | [ 1920, 1080] |          |
@@ -77,12 +83,12 @@ All this metadata are integrated into the HDF5 file.
 | fisheye     | bool                         | True/False    |          |
 
 #### description of the metadata
-- __size__ : Correspond to the size of the image used 
-- __Matrix__ : example [[ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]
-- __distortions__ : Correspond to the distorsion coefficients used in the camera calibration. it can be a list of 5 or 14 values depending on the model used. example :  [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338]
-- __rotation__ : example [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191] : rotation of the camera in the world coordinate system.
-- __translation__ : example [ -0.6270525677142821, -0.486046176284735, 1.664813522720072] : translation of the camera in the world coordinate system.
-- __fisheye__ : If the camera is a fisheye camera or not. If True, we should have a metadata for the fisheye in the HDF5 file.
+- **size** : Correspond to the size of the image used 
+- **Matrix** : example [[ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]
+- **distortions** : Correspond to the distorsion coefficients used in the camera calibration. it can be a list of 5 or 14 values depending on the model used. example :  [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338]
+- **rotation** : example [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191] : rotation of the camera in the world coordinate system.
+- **translation** : example [ -0.6270525677142821, -0.486046176284735, 1.664813522720072] : translation of the camera in the world coordinate system.
+- **fisheye** : If the camera is a fisheye camera or not. If True, we should have a metadata for the fisheye in the HDF5 file.
 ==> What are the metadata to add for the fisheye camera ?
 
 ### Metadata keypoint detection
@@ -97,18 +103,16 @@ One of the problem here is that we have to deal with different methods used to d
 | frame_per_second  | int  | 30                     |          |
 
 #### description of the metadata
-- __methode_name__ : Name of the method used to detect the keypoints. It can be 'OpenPose', 'AlphaPose', 'PoseNet', 'RTMpose2D' or any other method used.
-- __method_parameters__ : A dictionary of parameters used to obtain the 2D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
+- **methode_name** : Name of the method used to detect the keypoints. It can be 'OpenPose', 'AlphaPose', 'PoseNet', 'RTMpose2D' or any other method used.
+- **method_parameters** : A dictionary of parameters used to obtain the 2D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
   - threshold: float 0.5 : threshold used to filter the keypoints.
   - bbox: bool True : if the method used detect the bbox or not.
-- __bbox__ : If the method used detect the bbox or not. If True, we should have a metadata for the bbox in the HDF5 file.
-- __keypoints_indice__ : A dictionary of indices to name (or the opposite) to have the name of the keypoints in the array in the HDF5 file. 
-- __frame_per_second__ : The frame rate of the processed point (can be different from the original video).
-- 
+- **bbox** : If the method used detect the bbox or not.
+- **keypoints_indice** : A dictionary of indices to name (or the opposite) to have the name of the keypoints in the array in the HDF5 file. 
+- **frame_per_second** : The frame rate of the processed point (can be different from the original video).
+  
 ### Metadata video
 Probably all the former metada field from the 01_data_video should be integrated into the HDF5 file here under the 'video' group.
-['video']
-cf metadata video.
 
 ### Metadata data_set
 Do we want here to know the name of the subject,session and trial ==> yes, but should only be for the subject name an ID of the subjects.(Any information about the subject should be in a separated file). Could look like this:
@@ -131,11 +135,8 @@ If from_2D_data is False, we only used the metadata from the 01_data_video.
 
 
 #### description of the metadata
-- __from_2D_data__ : If the 3D keypoints are obtained from triangulated 2D data. If True, we should have a metadata for the triangulation in the HDF5 file.
-- __methode_name__ : Name of the method used to obtain the 3D keypoints. It can be 'weighted DDLT', 'RTMpose3d' or any other method used.
-- __methode_parameters__ : A dictionary of parameters used to obtain the 3D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
+- **from_2D_data** : If the 3D keypoints are obtained from triangulated 2D data. If True, we should have a metadata for the triangulation in the HDF5 file.
+- **methode_name** : Name of the method used to obtain the 3D keypoints. It can be 'weighted DDLT', 'RTMpose3d' or any other method used.
+- **methode_parameters** : A dictionary of parameters used to obtain the 3D keypoints. These parameters are specific to the method used and will be difficult to define a common structure. Some examples:
   - threshold: float 0.5 : threshold used to filter the keypoints.
-  
-
-
 
