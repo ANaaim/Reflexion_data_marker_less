@@ -11,10 +11,24 @@ depth = 3
 ```
 From there it will be easy to access all the data just using the dictionary keys, and to process automatically all the data. 
 
+Here there will be metadata for the processing of the data set and other that would be good to have for the publication of the data set.
+
+
+| name               | type      | optional | example                                                              |
+| ------------------ | --------- | -------- | -------------------------------------------------------------------- |
+| data_set_name      | str       |          | 'my_data_set'                                                        |
+| data_set_version   | str       |          | '1.0'                                                                |
+| depth              | int       |          | 3                                                                    |
+| forlder_roles      | list[str] |          | ['subject', 'session', 'trial']                                      |
+| data_set_structure | dict      |          | {'subject_01': {'session_01': ['trial_01', 'trial_02', 'trial_03']}} |
+| license            | str       |          | 'CC-BY-NC'                                                           |
+| creator            | dict      |          | {name="bitex", orcid="…", email="…"}                                 |
+| description        | str       |          | 'This is a test data set'                                            |
+
 ## Medata video 
 These metadata are common to all the video files (00_calibration_data, 01_data_video)
 
-### Non optional metadata
+### Basic metadata
 | name              | type      | Example                 | optional |
 | ----------------- | --------- | ----------------------- | -------- |
 | camera_ID         | str       | 'camera_01'             |          |
