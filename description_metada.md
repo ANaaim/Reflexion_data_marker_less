@@ -60,7 +60,21 @@ These metadata might not be always necessary but could be a good practice to hav
 | lens_type         | str         |          | 'wide'               |
 
 ## 00_calibration_data
-cf metadata video.
+cf metadata video plus some information about the calibration process.
+
+| name                   | type | optional | Example                                                               |
+| ---------------------- | ---- | -------- | --------------------------------------------------------------------- |
+| calibration_type       | str  |          | 'charuco/scene/'                                                      |
+| calibration_parameters | dict |          | {'board_type': 'charuco', 'board_size': [5, 7], 'square_size': 0.025} |
+
+**calibration_paramters** : 
+  - **board_type** : Type of board used for the calibration. It can be 'charuco', 'chessboard' or 'circle grid'.
+  - **board_size** : Size of the board used for the calibration. It can be a list of 2 values [width, height] in number of squares.
+  - **square_size** : Size of the square used for the calibration. It can be a float value in meters.
+  - **circle_diameter** : Size of the circle used for the calibration. It can be a float value in meters.
+  - **scene** : If the calibration is done on a scene or not.
+  - **scene_points_positions** : array of 3D points in the world coordinate system. It can be a list of 3D points in meters.
+
 
 ## 01_data_video
 cf metadata video.
