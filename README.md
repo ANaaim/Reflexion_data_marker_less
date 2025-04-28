@@ -99,7 +99,7 @@ graph LR
     |   +---subject_XX
     |   |    +---session_XX
     |   |        +---trial_XX
-    |   ...         |   calib_mat.toml
+    |   ...         |   calib_mat_from_IDXX.toml
     |               |   metadata_video.toml
     |               |
     |               +---raw
@@ -268,12 +268,12 @@ The data should be in the same format as the one used in the 02_Keypoints2D_mult
     |   data_mono_person.hdf5
     +--- cam_01
     |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
-    |       \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence,n] if no keypoint detected [NaN, NaN,NaN,i]
+    |       \--- keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence,n] if no keypoint detected [NaN, NaN,NaN,i]
     |
     ...
     +--- cam_XX
     |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
-    |       \---keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN,i]
+    |       \--- keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN,i]
     |
     |
     \---metadata
