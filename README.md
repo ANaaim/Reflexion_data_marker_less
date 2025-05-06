@@ -77,7 +77,20 @@ graph LR
     GT2D_ID --> GT2D_HDF5["data_mono_person.hdf5"]
 ````
 
-
+## Discussion AM : flexibilité sur les noms 
+    - metadata à mettre  dans calibration data
+    - est ce qu'il ne faudrait pas avoir un dossier spécifique pour la calibration (le fichier de sortie parceque c'est une sortie)
+    - Le dossier ne correspond pas forcément à une fléche d'entrée dans nos fonctions. 
+    - Est ce que l'on ne parlerait pas plutot de "type de données" plutot que d'avoir des noms spécifiques.
+        - video calibration
+        - calculated calibration
+        - video data
+        - keypoints 2D multisubject
+        - keypoints 2D monosubject
+        - keypoints 3D monosubject
+        - ground truth 3D <=== Au final ground truth 3D et 2D sont les mêmes données que keypoints 3D et 2D. Est ce que l'on doit les garder ? 
+        - ground truth 2D
+        ==> donc prévoir de rajouter metadata pour chaque type de données permettant d'identifier ground truthe or not. 
 ````bash
     | 
     +---Metadata_data_set.toml
@@ -85,7 +98,7 @@ graph LR
     +---00_calibration_data
     |   \---IDXX_calib
     |       |   calib_matrix.toml
-    |       |   metadata_video.toml
+    |       |   metadata_video_calibration .toml
     |       |
     |       +---extrinsics
     |       |   \---cam_XX
@@ -95,11 +108,17 @@ graph LR
     |           \---cam_XX
     |                   cam_XX.avi
     |
-    +---01_data_video
+    +---005_calibration_data???? 
+    |   |   +---subject_XX
+    |   |       +---session_XX
+    |   |           +---trial_XX   
+    |   |                   \---calib.toml <== metada pointant vers l'ID de la calibration (pour savoir d'ou ça vient)
+    |
+    +---01_data_video <== 
     |   +---subject_XX
     |   |    +---session_XX
     |   |        +---trial_XX
-    |   ...         |   calib_mat_from_IDXX.toml
+    |   ...         |   calib_mat_from_IDXX.toml <== peut être l'enlever si on considère que l'on a la calib via le repertoier 005 chaque repertoire doit être une entrée d'une fonction. 
     |               |   metadata_video.toml
     |               |
     |               +---raw
@@ -109,13 +128,14 @@ graph LR
     |                    \---cam_XX
     |                        cam_XX.avi
     |
-    +---02_keypoints_2D_multisubject
-    |   |---method_XX
+    +---02_keypoints_2D_multisubject <== Est ce que le répertoire method est nécéssaire Pourrait on le remplacer par un metadata et faire plusieurs repertoires (nécéssité d'être souple )
+    |   |---method_Resolution_High ==> c'est pas tant des méthodes que des traitements spécifiques 
+    |   |   +---metadata_method ???? <== C'est sur que c'est nécéssaire (pas forcément standardisé
     |   |   +---subject_XX
     |   |       +---session_XX
     |   |           +---trial_XX
     |   |                   data_multisubject.hdf5
-    |   ...
+    |   ..
     |
     +---03_keypoints_2D_monosubject
     |   |---method_XX
@@ -273,7 +293,7 @@ The data should be in the same format as the one used in the 02_Keypoints2D_mult
     ...
     +--- cam_XX
     |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
-    |       \--- keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN,i]
+    |       \--- keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence,n] if no keypoint detected [NaN, NaN,NaN,i]
     |
     |
     \---metadata

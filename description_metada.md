@@ -9,8 +9,11 @@ depth = 3
 {'subject_01': {'session_01': ['trial_01', 'trial_02', 'trial_03'],
                  'session_02': ['trial_01', 'trial_02', 'trial_03']},
  'subject_02': {'session_01': ['trial_01', 'trial_02', 'trial_03'],
-                'session_02': ['trial_01', 'trial_02', 'trial_03']}}
+                'session_02': ['trial_01', 'trial_02', 'trial_03']}} 
 ```
+Est ce que cette structure est nécéssaire ? Au final on peut tout parcourir et recréer la meme arborescence <= 
+==> Est ce qu'on integrerai pas les ID des calib à cette endroit là. 
+
 From there it will be easy to access all the data just using the dictionary keys, and to process automatically all the data. 
 
 Here there will be metadata for the processing of the data set and other that would be good to have for the publication of the data set.
@@ -78,6 +81,7 @@ cf metadata video plus some information about the calibration process.
 
 ## 01_data_video
 cf metadata video.
+In the metadata here we will indicated the ID of the intrinsics and extrinsics calibration folder (they can be from different session). However as our philosophy is to have everything in each folder the calibration matrix should be here too. The fact to have the pointing to the extrinsics and intrinsics folder is to be able to reprocess the extrinisc and intrinsics matrix if necessary. 
 Here the calib_matrix is not considered as a metadata, but as an individual data in a toml file. These data will be integrated into the HDF5 file in the following step as a specific metadata. 
 
 
@@ -86,14 +90,14 @@ All this metadata are integrated into the HDF5 file.
 
 ### Metadata calibration matrix
 
-| name        | type                         | Optional | Example       |
-| ----------- | ---------------------------- | -------- | ------------- |
-| size        | list[int]                    |          | [ 1920, 1080] |
-| matrix      | list[list[float]] 3x3 matrix |          |               |
-| distortions | list[float]                  |          |               |
-| rotation    | list[float]                  |          |               |
-| translation | list[float]                  |          |               |
-| fisheye     | bool                         |          | True/False    |
+| name        | type                         | Optional | Example      |
+| ----------- | ---------------------------- | -------- | ------------ |
+| size        | list[int]                    |          | [1920, 1080] |
+| matrix      | list[list[float]] 3x3 matrix |          |              |
+| distortions | list[float]                  |          |              |
+| rotation    | list[float]                  |          |              |
+| translation | list[float]                  |          |              |
+| fisheye     | bool                         |          | True/False   |
 
 #### description of the metadata
 - **size** : Correspond to the size of the image used 
