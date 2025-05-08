@@ -21,15 +21,21 @@ After a nested dictionary will be created to store the information about the sub
 In all folder the following folder organisation can be interchanged and be in any order using the **folder_depth** key in the metadata file but should be kept the same in the different type of data folder:
 
 ````
-+---01_calibration_matrix
-    \---subject_XX
-         \---session_XX
-             \---trial_XX
-                    -type_of_file.XX
+│
+├── 01_calibration_matrix
+│   └── subject_XX
+│       └── session_XX
+│           └── trial_XX
+│               └── type_of_file.XX
+````
 will be refers as 
-+---01_calibration_matrix
-    \---folder_organisation
-            \----type_of_file.XX
+````
+│
+├── 01_calibration_matrix
+│   └── subject_XX
+│       └── session_XX
+│           └── trial_XX
+│               └── type_of_file.XX
 ````
 
 For the next schema it will be refers as **folder_ organisation** to make the graph more readable.
