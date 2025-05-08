@@ -1,3 +1,10 @@
+## Big question : 
+What is the scope of the standardisation ? :
+    - markerless in general ? ==> best size might be the standardisation of the trial with an emphasis on what the set of minimal metadata should be. It might lead to developing code allowing people to generate sharable data from such organsiation.   
+    - markerless for studying the different methods ? ==> best size might be a global folder for each type of data
+**We have to emphasize for what the standardisation is done for.**
+In both cases, it will be needed to standardise the type of data shared. 
+
 ## data structure
 In all folder the following folder organisation can be interchanged and be in any order using the **folder_depth** key in the metadata file but should be kept the same in the different type of data folder:
 
@@ -143,6 +150,26 @@ For the next schema it will be refers as **folder_ organisation** to make the gr
                     ....
 
 ````
+
+## Other structuration proposition
+BR : the unit of analysis is the trial and all the information that is needed to process it. 
+````
+|
+folder_organisation (session/subject/trial descibed in the metadata_dataset file)
+       +---00_calibration_video
+       +---01_calibration_data
+       +---02_data_video
+       +---03_keypoints_2D_multisubject
+       +---04_keypoints_2D_monosubject
+       +---05_keypoints_3D_monosubject
+````
+In each folder we will have only one TRIAL with all the metadata necessary to know what is the data. 
+
+Here the idea is to have the folder that represent the better the reality of the acqusition : we put in the same folder. 
+In this case, it will be to the user to generate the function that allow to generate folder to be shared easily.
+
+Here one problem is that it might be diffiult to repeat the calibration_video data in each folder. We have to think about a method to link easily the data to the correct video (it was done though the ID in the metadata_video file in the former organisation).
+
 
 ## Global comment
 
