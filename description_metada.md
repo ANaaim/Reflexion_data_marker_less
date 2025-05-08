@@ -79,6 +79,46 @@ cf metadata video plus some information about the calibration process.
   - **scene_points_positions** : array of 3D points in the world coordinate system. It can be a list of 3D points in meters.
 
 
+## 01_calibration_matrix
+
+### The calib_mat.toml file 
+Currently this is the file format that LBMC is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
+
+It should be decided which is the more common format that should be used for describing the camera intrinsics and extrinsics matrix. Currently, it seems that it is the OpenCV format that is used which would seems one of the most common format. 
+
+
+````toml
+[cam_01]
+name = "M11139"
+size = [ 1920.0, 1080.0]
+matrix = [ [ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]
+distortions = [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338]
+rotation = [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191]
+translation = [ -0.6270525677142821, -0.486046176284735, 1.664813522720072]
+fisheye = false
+...
+[cam_XX]
+name = "cam_XX"
+size = [ 1920.0, 1080.0]
+matrix = [ [ 2144.9601175685557, 0.0, 967.859729904023], [ 0.0, 2156.5146368800865, 550.1781128465403], [ 0.0, 0.0, 1.0]]
+distortions = [ -0.09658154939711396, 0.11563585511085413, 0.0008519503575105665, 0.0028026774341342975]
+rotation = [ -0.8305202999790112, -1.891827398628365, 0.34774377648736793]
+translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
+fisheye = false
+....
+
+[metadata]
+ID_calibration = "ID_XX"
+calibration_type = "charuco/scene/"
+calibration_parameters = {board_type = "charuco", board_size = [5, 7], square_size = 0.025}
+board_type = "charuco"
+board_size = [5, 7]
+square_size = 0.025
+circle_diameter = 0.025
+scene = true
+scene_points_positions = [ [0.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 2.0] ]
+````
+
 ## 01_data_video
 cf metadata video.
 In the metadata here we will indicated the ID of the intrinsics and extrinsics calibration folder (they can be from different session). However as our philosophy is to have everything in each folder the calibration matrix should be here too. The fact to have the pointing to the extrinsics and intrinsics folder is to be able to reprocess the extrinisc and intrinsics matrix if necessary. 
@@ -88,24 +128,7 @@ Here the calib_matrix is not considered as a metadata, but as an individual data
 ## 02_keypoints_2D_multisubject
 All this metadata are integrated into the HDF5 file.
 
-### Metadata calibration matrix
-
-| name        | type                         | Optional | Example      |
-| ----------- | ---------------------------- | -------- | ------------ |
-| size        | list[int]                    |          | [1920, 1080] |
-| matrix      | list[list[float]] 3x3 matrix |          |              |
-| distortions | list[float]                  |          |              |
-| rotation    | list[float]                  |          |              |
-| translation | list[float]                  |          |              |
-| fisheye     | bool                         |          | True/False   |
-
-#### description of the metadata
-- **size** : Correspond to the size of the image used 
-- **Matrix** : example [[ 1237.0284339307132, 0.0, 951.8049061116914], [ 0.0, 1239.2592485704645, 528.5344016190471], [ 0.0, 0.0, 1.0]]
-- **distortions** : Correspond to the distorsion coefficients used in the camera calibration. it can be a list of 5 or 14 values depending on the model used. example :  [ -0.13060079196920754, 0.13400864981470154, 0.00018961778799407008, -0.0010206183805026338]
-- **rotation** : example [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191] : rotation of the camera in the world coordinate system.
-- **translation** : example [ -0.6270525677142821, -0.486046176284735, 1.664813522720072] : translation of the camera in the world coordinate system.
-- **fisheye** : If the camera is a fisheye camera or not. If True, we should have a metadata for the fisheye in the HDF5 file.
+xf True, we should have a metadata for the fisheye in the HDF5 file.
 ==> What are the metadata to add for the fisheye camera ?
 
 ### Metadata keypoint detection

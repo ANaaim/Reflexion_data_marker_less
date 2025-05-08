@@ -108,37 +108,33 @@ graph LR
     |           \---cam_XX
     |                   cam_XX.avi
     |
-    +---005_calibration_data???? 
-    |   |   +---subject_XX
-    |   |       +---session_XX
-    |   |           +---trial_XX   
-    |   |                   \---calib.toml <== metada pointant vers l'ID de la calibration (pour savoir d'ou ça vient)
+    +---01_calibration_matrix
+    |      \---subject_XX
+    |          \---session_XX
+    |              \---trial_XX
+    |                      |
+    |                      \---calib.toml
     |
-    +---01_data_video <== 
+    +---02_data_video <== 
     |   +---subject_XX
     |   |    +---session_XX
     |   |        +---trial_XX
-    |   ...         |   calib_mat_from_IDXX.toml <== peut être l'enlever si on considère que l'on a la calib via le repertoier 005 chaque repertoire doit être une entrée d'une fonction. 
+    |   ...         |   optional : calib_mat_from_IDXX.toml 
     |               |   metadata_video.toml
-    |               |
-    |               +---raw
-    |               |    \---cam_XX
-    |               |        cam_XX.avi
-    |               \---undistorted
+    |               \---video
     |                    \---cam_XX
-    |                        cam_XX.avi
+    |                        cam_XX.avi/cam.jpg 
     |
-    +---02_keypoints_2D_multisubject <== Est ce que le répertoire method est nécéssaire Pourrait on le remplacer par un metadata et faire plusieurs repertoires (nécéssité d'être souple )
-    |   |---method_Resolution_High ==> c'est pas tant des méthodes que des traitements spécifiques 
-    |   |   +---metadata_method ???? <== C'est sur que c'est nécéssaire (pas forcément standardisé
+    +---03_keypoints_2D_multisubject 
+    |   |   +---metadata_method_origin_data  <== C'est sur que c'est nécéssaire (pas forcément standardisé
     |   |   +---subject_XX
     |   |       +---session_XX
     |   |           +---trial_XX
     |   |                   data_multisubject.hdf5
     |   ..
     |
-    +---03_keypoints_2D_monosubject
-    |   |---method_XX
+    +---04_keypoints_2D_monosubject
+    |   |   +---metadata_method_origin_data
     |   |   +---subject_XX
     |   |       +---session_XX
     |   |           +---trial_XX
@@ -146,31 +142,14 @@ graph LR
     |   |                        data_monosubject.hdf5
     |   ...
     |   
-    +---04_keypoints_3D_monosubject
-    |   +---method_2D_XX_method_3D_XX
-    |   |   +---subject_XX
-    |   |       +---session_XX
-    |   |           +---trial_XX
-    |   |                +---ID_subject_XX
-    |   |                        data_mono_person.c3d
-    |   |                        data_mono_person.hdf5
-    |   ...
-    |
-    +---05_ground_truth_3D
-    |   +---subject_XX
-    |   |    +---session_XX
-    |   |        +---trial_XX
-    |   |            calib_matrix.toml
-    |   |            data_mono_person.c3d
-    |   |            data_mono_person.hdf5
-    |   ...
-    |
-    \---06_ground_truth_keypoints_2D
-        +---subject_XX
-        |    +---session_XX
-        |        +---trial_XX
-        |            data_mono_person.hdf5
-        ...
+    \---05_keypoints_3D_monosubject
+       |---metadata_method_origin_data
+       +---subject_XX
+            +---session_XX
+                +---trial_XX
+                    +---ID_subject_XX
+                        data_mono_person.c3d
+                        data_mono_person.hdf5
 ````
 
 ## Global comment
@@ -182,7 +161,19 @@ After a nested dictionary will be created to store the information about the sub
 **folder_depth** might not be the best name for this, as **depth** might be enough and largely used in the community. However, as we can use RGB-D camera precising that we are talking about the folder might avoid some confusion. 
 
 ### Philosophy of the data organisation 
-In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_data_video folder or do any annoying copy and paste. 
+In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_data_video folder or do any annoying copy and paste.
+
+A proposition to avoid data duplication (I think both should be done) should be to consider that we have some type of data instead : 
+    - calibration video data
+    - calibration of the video
+    - video data
+    - keypoints 2D multisubject
+    - keypoints 2D monosubject
+    - keypoints 3D monosubject
+
+In the end, ground truth 3D and 2D are the same data as keypoints 3D and 2D. So we could consider that we have only one type of data. This would be a more general way to consider the data, but it might be less clear for the user.
+
+This approach allow a more "object" approach for the code : you give a folder of calibration and a folder of 2D_keypoints and the code will be able to process it. But you do not need the calibration to process the video data to obtain the 2D keypoints. As a result, the second approach is more flexible and allow to process the data in a more modular way. However, we loose the aspect of the each leaf folder being able to be processed by itself.
 
 ### File format 
 
@@ -208,16 +199,7 @@ Two propositions (to validate with people from computer vision background) :
 ### The metadata_video.toml file
 See in the file description_metadata.md. 
 
-
-## 01_data_video
-The video organisation is similar to the one used in the 00_calibration_data.
-
-Somes questions to be asked here :
-    - Is it expected that the video will be in raw and undistorted format ? 
-    - Should the video be reorientation there. 
-    
-The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
-
+## 01_calibration_data
 
 ### The calib_mat.toml file 
 Currently this is the file format that LBMC is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
@@ -243,9 +225,32 @@ distortions = [ -0.09658154939711396, 0.11563585511085413, 0.0008519503575105665
 rotation = [ -0.8305202999790112, -1.891827398628365, 0.34774377648736793]
 translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
 fisheye = false
+....
+
+[metadata]
+ID_calibration = "ID_XX"
+calibration_type = "charuco/scene/"
+calibration_parameters = {board_type = "charuco", board_size = [5, 7], square_size = 0.025}
+board_type = "charuco"
+board_size = [5, 7]
+square_size = 0.025
+circle_diameter = 0.025
+scene = true
+scene_points_positions = [ [0.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 2.0] ]
 ````
 
-## 02_keypoints_2D_multisubject
+
+## 02_data_video
+The video organisation is similar to the one used in the 00_calibration_data.
+
+Somes questions to be asked here :
+    - Is it expected that the video will be in raw and undistorted format ? 
+    - Should the video be reorientation there. 
+    
+The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
+
+
+## 03_keypoints_2D_multisubject
 
 ### data_multi_person.hdf5
 These data should contains the different bbox detected and the keypoints detected. The bbox should be in the format [x1, y1, x2, y2] where x1 and y1 are the coordinates of the top left corner and x2 and y2 are the coordinates of the bottom right corner. The keypoints should be in the format [x, y, conf] where x and y are the coordinates of the keypoint and conf is the confidence of the detection.
@@ -280,7 +285,7 @@ These data should contains the different bbox detected and the keypoints detecte
             \---TODO list metadata
 ````
 
-## 03_keypoints_2D_monosubject
+## 04_keypoints_2D_monosubject
 
 The data should be in the same format as the one used in the 02_Keypoints2D_multisubject. The only difference is that there is only one subject and one camera. 
 
@@ -303,7 +308,7 @@ The data should be in the same format as the one used in the 02_Keypoints2D_mult
             \---TODO list metadata cf description_metadata.md
 ````
 
-## 04_keypoints_3D_monosubject
+## 05_keypoints_3D_monosubject
 
 One question here is on the use of which data format. The c3d format is a format very used in biomechanics which might make it harder to be used by other people from other domains such as computer vision. The hdf5 format is more general and could be used by other people. However, there is a some useful tool to visualize the c3d data which could be useful for the user.
 
@@ -321,7 +326,7 @@ data_mono_person.hdf5
 ````
 Similar meta data should be contained in the metadata of the c3d file. 
 
-## 05-06 Ground_truth_3D and 2D
+## 05-06 Ground_truth_3D and 2D : No more needed if we consider the approach of the data organisation as a type of data.
 
 The data here should have the same format as the one used in the Keypoints_3D subject and Keypoints_2D subject.
 The only difference is that in the 3D data the calibration matrix should be included in each leaf folder and do not have a specific folder for the method used to obtain the 3D keypoints. 
