@@ -1,11 +1,23 @@
 ## Big question : 
 What is the scope of the standardisation ? :
-    - markerless in general ? ==> best size might be the standardisation of the trial with an emphasis on what the set of minimal metadata should be. It might lead to developing code allowing people to generate sharable data from such organsiation.   
-    - markerless for studying the different methods ? ==> best size might be a global folder for each type of data
+- markerless in general ? ==> best size might be the standardisation of the trial with an emphasis on what the set of minimal metadata should be. It might lead to developing code allowing people to generate sharable data from such organsiation.   
+- markerless for studying the different methods ? ==> best size might be a global folder for each type of data
 **We have to emphasize for what the standardisation is done for.**
 In both cases, it will be needed to standardise the type of data shared. 
 
-## data structure
+Two element are important to be standardised :
+    - First and foremost, what type of file (.avi/h55/toml) should be used for each type of data.
+    - Second, what is the minimum set of metadata
+    - Third the data structure of the data.
+
+# Data structure
+
+## Global structure folder
+The part in the structure where we found subject_XX, session_XX and trial_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and trial is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : **folder_depth** and different nested dictionaries. The **folder_depth** will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the trial which will correspond to a **folder_depth** of 3.
+After a nested dictionary will be created to store the information about the subject, session and trial allowing the user to access the information easily.
+
+**folder_depth** might not be the best name for this, as **depth** might be enough and largely used in the community. However, as we can use RGB-D camera precising that we are talking about the folder might avoid some confusion. 
+
 In all folder the following folder organisation can be interchanged and be in any order using the **folder_depth** key in the metadata file but should be kept the same in the different type of data folder:
 
 ````
@@ -21,6 +33,9 @@ will be refers as
 ````
 
 For the next schema it will be refers as **folder_ organisation** to make the graph more readable.
+
+## First proposition : by data type
+The main idea here is that each folder can be directly processed indifferently and there is a unit of data inside (approach "object" that with an inner structure defined by the metadata_data_set.toml file). The idea is that it seems easy to share directly a folder and that each leaf folder can be processed by itself.
 
 ````
 │
@@ -73,8 +88,9 @@ For the next schema it will be refers as **folder_ organisation** to make the gr
             └── data_mono_person.hdf5
 ````
 
-## Other structuration proposition
-BR : the unit of analysis is the trial and all the information that is needed to process it. The f
+## Second structuration : by trial 
+The unit of analysis is the trial and all the information that is needed to process it. It is in a sens a more flexible approache as it allows for any structure. However, it might be less easy to share the data. It would need specific code to extract the data from the folder (for example, if we do not want to share the video we would have to remove it from each folder). But such approach could be done with a function that would allow to generate the folder organisation from the metadata_data_set file. The same default could be said from the former organisation as if we want to share specific subject/session/trial we will have to remove also the data from the folder. This approach also seems less adapted when studying the different methode as it would need in each folder the metadata of the different methods used where as in the former organisation we would always have one folder for the video and one folder for each method studied where as here it would mean that in each folder we would have multiple folder for each method (might be a bit annoying). 
+
 ````
 |
 │
@@ -99,7 +115,7 @@ BR : the unit of analysis is the trial and all the information that is needed to
     │   ├── calib_mat_from_IDXX.toml (optional)
     │   └── video
     │       └── cam_XX
-    │           └── cam_XX.avi or cam_XX.jpg
+    │               └── cam_XX.avi or cam_XX.jpg
     │
     ├── 03_keypoints_2D_multisubject
     │   ├── metadata_method_origin_data
@@ -125,12 +141,6 @@ Here one problem is that it might be diffiult to repeat the calibration_video da
 
 
 ## Global comment
-
-### Structure of the data
-The part in the structure where we found subject_XX, session_XX and trial_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and trial is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : **folder_depth** and different nested dictionaries. The **folder_depth** will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the trial which will correspond to a **folder_depth** of 3.
-After a nested dictionary will be created to store the information about the subject, session and trial allowing the user to access the information easily.
-
-**folder_depth** might not be the best name for this, as **depth** might be enough and largely used in the community. However, as we can use RGB-D camera precising that we are talking about the folder might avoid some confusion. 
 
 ### Philosophy of the data organisation 
 In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_data_video folder or do any annoying copy and paste.
@@ -197,6 +207,7 @@ distortions = [ -0.09658154939711396, 0.11563585511085413, 0.0008519503575105665
 rotation = [ -0.8305202999790112, -1.891827398628365, 0.34774377648736793]
 translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
 fisheye = false
+
 ....
 
 [metadata]
