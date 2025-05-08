@@ -23,56 +23,54 @@ will be refers as
 For the next schema it will be refers as **folder_ organisation** to make the graph more readable.
 
 ````
-    | 
-    +---Metadata_data_set.toml
-    |
-    +---00_calibration_data
-    |   \---IDXX_calib
-    |       |   calib_matrix.toml
-    |       |   metadata_video_calibration .toml
-    |       |
-    |       +---extrinsics
-    |       |   \---cam_XX
-    |       |           cam_XX.avi
-    |       |
-    |       \---intrinsics
-    |           \---cam_XX
-    |                   cam_XX.avi
-    |
-    +---01_calibration_matrix
-    |      +---folder_organisation
-    |      |     \---calib.toml
-    |      ...
-    |
-    +---02_data_video <== 
-    |   +---folder_organisation
-    |   |   |---optional : calib_mat_from_IDXX.toml 
-    |   |   |---metadata_video.toml
-    |   ...     \---video
-    |               \---cam_XX|
-    |                   cam_XX.avi/cam.jpg 
-    |
-    +---03_keypoints_2D_multisubject 
-    |   |   +---metadata_method_origin_data
-    |   |   +---folder_organisation
-    |   |           \---data_multisubject.hdf5
-    |   ..
-    |
-    +---04_keypoints_2D_monosubject
-    |      +---metadata_method_origin_data
-    |      +---folder_organisation
-    |              |---ID_subject_XX
-    |              |       \data_monosubject.hdf5
-    | 
-    |   
-    \---05_keypoints_3D_monosubject
-       |---metadata_method_origin_data
-       +---folder_organisation
-                    |---ID_subject_XX
-                    |    data_mono_person.c3d
-                    |    data_mono_person.hdf5
-                    ....
-
+│
+├── Metadata_data_set.toml
+│
+├── 00_calibration_data
+│   └── IDXX_calib
+│       ├── calib_matrix.toml
+│       ├── metadata_video_calibration.toml  # Removed extra space
+│       ├── extrinsics
+│       │   └── cam_XX
+│       │       └── cam_XX.avi
+│       └── intrinsics
+│           └── cam_XX
+│               └── cam_XX.avi
+│
+│
+├── 01_calibration_matrix
+│   └── folder_organisation
+│       └── calib.toml
+│    
+│
+├── 02_data_video
+│   └── folder_organisation
+│       ├── calib_mat_from_IDXX.toml (optional)
+│       │── metadata_video.toml
+│       └── video
+│           └── cam_XX
+│               └── cam_XX.avi or cam_XX.jpg
+│
+│
+├── 03_keypoints_2D_multisubject
+│   ├── metadata_method_origin_data
+│   └── folder_organisation
+│       └── data_multisubject.hdf5
+│   
+│
+├── 04_keypoints_2D_monosubject
+│   ├── metadata_method_origin_data
+│   └── folder_organisation
+│       └── ID_subject_XX
+│           └── data_monosubject.hdf5
+│   
+│
+└── 05_keypoints_3D_monosubject
+    ├── metadata_method_origin_data
+    └── folder_organisation
+        └── ID_subject_XX
+            ├── data_mono_person.c3d
+            └── data_mono_person.hdf5
 ````
 
 ## Other structuration proposition
