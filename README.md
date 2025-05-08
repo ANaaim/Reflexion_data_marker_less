@@ -1,201 +1,200 @@
-## Big question : 
-What is the scope of the standardisation ? :
-- markerless in general ? ==> best size might be the standardisation of the trial with an emphasis on what the set of minimal metadata should be. It might lead to developing code allowing people to generate sharable data from such organsiation.   
-- markerless for studying the different methods ? ==> best size might be a global folder for each type of data
-**We have to emphasize for what the standardisation is done for.**
-In both cases, it will be needed to standardise the type of data shared. 
+# Data Standardisation for Markerless Acquisition
 
-Two element are important to be standardised :
-    - First and foremost, what type of file (.avi/h55/toml) should be used for each type of data.
-    - Second, what is the minimum set of metadata
-    - Third the data structure of the data.
+## Scope of Standardisation
 
-# Data structure
+We need to determine the appropriate scope for our standardisation efforts:
 
-## Global structure folder
-The part in the structure where we found subject_XX, session_XX and trial_XX is not suposed to be always there. The most important element is that each final folder can be processed by itself. The information about the subject session and trial is not mandatory. It is just a way to organize the data that will be indicated in the metadata_dataset.h5 file. This information will be contained in different information fields : **folder_depth** and different nested dictionaries. The **folder_depth** will correspond to the number of folders that are in the path. In our example, the first folder will be the subject, the second one the session and the third one the trial which will correspond to a **folder_depth** of 3.
-After a nested dictionary will be created to store the information about the subject, session and trial allowing the user to access the information easily.
+1. **For General Markerless Data:**
+   - Focus on standardizing trials with emphasis on minimal required metadata
+   - This approach could lead to code that enables users to generate sharable data
 
-**folder_depth** might not be the best name for this, as **depth** might be enough and largely used in the community. However, as we can use RGB-D camera precising that we are talking about the folder might avoid some confusion. 
+2. **For Comparative Studies of Different Methods:**
+   - Focus on standardizing by data type (videos, calibration data, etc.)
+   - This facilitates easier comparison between different approaches
 
-In all folder the following folder organisation can be interchanged and be in any order using the **folder_depth** key in the metadata file but should be kept the same in the different type of data folder:
+**The purpose of standardisation must be clearly defined as it will guide our approach.**
 
-````
-│
-├── 01_calibration_matrix
+In either case, three key elements need standardisation:
+- File formats for each data type (.avi, .hdf5, .toml, etc.)
+- Minimum set of required metadata
+- Overall data structure organization
+
+## Data Structure
+
+### Global Folder Structure
+
+The hierarchical structure (subject_XX, session_XX, trial_XX) is not mandatory but provides organizational benefits. The critical requirement is that each final folder should be self-contained and processable independently.
+
+Information about subjects, sessions, and trials is stored as metadata in the `metadata_dataset.h5` file through:
+- **folder_depth**: Indicates the number of folders in the hierarchy path (e.g., a depth of 3 means first folder is subject, second is session, third is trial)
+- Nested dictionaries storing the relevant information for easy access
+
+> Note: While "depth" might be sufficient as terminology, "folder_depth" helps avoid confusion with RGB-D camera data.
+
+In all organizational schemes, the following structure can be used in any order as long as the **folder_depth** parameter is properly set in the metadata:
+
+```
+├── Type_data_folder
 │   └── subject_XX
 │       └── session_XX
 │           └── trial_XX
-│               └── type_of_file.XX
-````
-will be refers as 
-````
-│
-├── 01_calibration_matrix
-│   └── subject_XX
-│       └── session_XX
-│           └── trial_XX
-│               └── type_of_file.XX
-````
+│               └── data_files
+```
 
-For the next schema it will be refers as **folder_ organisation** to make the graph more readable.
+For simplicity, in subsequent diagrams this hierarchical structure will be referred to as **folder_organisation**.
 
-## First proposition : by data type
-The main idea here is that each folder can be directly processed indifferently and there is a unit of data inside (approach "object" that with an inner structure defined by the metadata_data_set.toml file). The idea is that it seems easy to share directly a folder and that each leaf folder can be processed by itself.
+### Organizational Approaches
 
-````
-│
+#### 1. Organization by Data Type
+
+This approach treats each folder as a self-contained unit of data (calibration, video, keypoints) defined by corresponding metadata files.
+
+**Advantages:**
+- Each leaf folder is self-contained and independently processable
+- Sharing specific types of data is straightforward (e.g., share only 2D data)
+
+**Structure example:**
+```
 ├── Metadata_data_set.toml
-│
 ├── 00_calibration_data
 │   └── IDXX_calib
 │       ├── calib_matrix.toml
-│       ├── metadata_video_calibration.toml  # Removed extra space
+│       ├── metadata_video_calibration.toml
 │       ├── extrinsics
 │       │   └── cam_XX
 │       │       └── cam_XX.avi
 │       └── intrinsics
 │           └── cam_XX
 │               └── cam_XX.avi
-│
-│
 ├── 01_calibration_matrix
 │   └── folder_organisation
 │       └── calib.toml
-│    
-│
 ├── 02_data_video
 │   └── folder_organisation
 │       ├── calib_mat_from_IDXX.toml (optional)
-│       │── metadata_video.toml
+│       ├── metadata_video.toml
 │       └── video
 │           └── cam_XX
 │               └── cam_XX.avi or cam_XX.jpg
-│
-│
 ├── 03_keypoints_2D_multisubject
 │   ├── metadata_method_origin_data
 │   └── folder_organisation
 │       └── data_multisubject.hdf5
-│   
-│
 ├── 04_keypoints_2D_monosubject
 │   ├── metadata_method_origin_data
 │   └── folder_organisation
 │       └── ID_subject_XX
 │           └── data_monosubject.hdf5
-│   
-│
 └── 05_keypoints_3D_monosubject
     ├── metadata_method_origin_data
     └── folder_organisation
         └── ID_subject_XX
             ├── data_mono_person.c3d
             └── data_mono_person.hdf5
-````
+```
 
-## Second structuration : by trial 
-The unit of analysis is the trial and all the information that is needed to process it. It is in a sens a more flexible approache as it allows for any structure. However, it might be less easy to share the data. It would need specific code to extract the data from the folder (for example, if we do not want to share the video we would have to remove it from each folder). But such approach could be done with a function that would allow to generate the folder organisation from the metadata_data_set file. The same default could be said from the former organisation as if we want to share specific subject/session/trial we will have to remove also the data from the folder. This approach also seems less adapted when studying the different methode as it would need in each folder the metadata of the different methods used where as in the former organisation we would always have one folder for the video and one folder for each method studied where as here it would mean that in each folder we would have multiple folder for each method (might be a bit annoying). 
+#### 2. Organization by Trial
 
-````
-|
-│
+This approach treats each trial as a complete unit containing all necessary data and metadata.
+
+**Advantages:**
+- Each trial folder is holistic and independently processable
+- Allows flexible folder structure with session/subject/trial information in metadata
+
+**Challenges:**
+- Calibration data may need to be repeated or linked across trial folders
+- Less efficient for method comparison (multiple method folders within each trial)
+
+**Structure example:**
+```
 ├── Metadata_data_set.toml
-└── folder_organisation (session/subject/trial described in the metadata_dataset file)
+└── folder_organisation
     ├── 00_calibration_video
     │   └── IDXX_calib
     │       ├── calib_matrix.toml
-    │       ├── metadata_video_calibration.toml  # Removed extra space
+    │       ├── metadata_video_calibration.toml
     │       ├── extrinsics
     │       │   └── cam_XX
     │       │       └── cam_XX.avi
     │       └── intrinsics
     │           └── cam_XX
     │               └── cam_XX.avi
-    │
     ├── 01_calibration_data
     │   └── calib_matrix.toml
-    │
     ├── 02_data_video
     │   ├── metadata_video.toml
     │   ├── calib_mat_from_IDXX.toml (optional)
     │   └── video
     │       └── cam_XX
-    │               └── cam_XX.avi or cam_XX.jpg
-    │
+    │           └── cam_XX.avi or cam_XX.jpg
     ├── 03_keypoints_2D_multisubject
     │   ├── metadata_method_origin_data
     │   └── data_multisubject.hdf5
-    │
     ├── 04_keypoints_2D_monosubject
     │   ├── metadata_method_origin_data
     │   └── ID_subject_XX
     │       └── data_monosubject.hdf5
-    │
     └── 05_keypoints_3D_monosubject
         ├── metadata_method_origin_data
         └── ID_subject_XX
             ├── data_mono_person.c3d
             └── data_mono_person.hdf5
-````
-In each folder we will have only one TRIAL with all the metadata necessary to know what is the data. 
+```
 
-Here the idea is to have the folder that represent the better the reality of the acqusition : we put in the same folder. 
-In this case, it will be to the user to generate the function that allow to generate folder to be shared easily.
+In this organization, each folder contains a single TRIAL with all necessary metadata, mirroring the actual acquisition process.
 
-Here one problem is that it might be diffiult to repeat the calibration_video data in each folder. We have to think about a method to link easily the data to the correct video (it was done though the ID in the metadata_video file in the former organisation).
+## Global Considerations
 
+### Philosophy of Data Organization
 
-## Global comment
+While this approach may appear to duplicate data, it serves important purposes:
+- Each leaf folder can be processed independently
+- Specific data components can be easily shared without reorganizing content
+- It supports a modular processing workflow
 
-### Philosophy of the data organisation 
-In this organisation it seems that a lot of data are duplicated. The main purpose here is to allow each leaf folder to be processed by itself. Also each part can be easily shared with other people. Indeed, you could want to share only the 2D data with someone else. In this case, you will just have to share the 02_keypoints_2D_multisubject folder without having to share the 01_data_video folder or do any annoying copy and paste.
+To reduce duplication, we can consider adopting a "data type" perspective:
+- Calibration video data
+- Calibration matrices
+- Video data
+- 2D keypoints (multi-subject)
+- 2D keypoints (mono-subject)
+- 3D keypoints (mono-subject)
 
-A proposition to avoid data duplication (I think both should be done) should be to consider that we have some type of data instead : 
-    - calibration video data
-    - calibration of the video
-    - video data
-    - keypoints 2D multisubject
-    - keypoints 2D monosubject
-    - keypoints 3D monosubject
+This object-oriented approach makes the code more modular—you can process specific data types independently (e.g., generate 2D keypoints from video without requiring calibration).
 
-In the end, ground truth 3D and 2D are the same data as keypoints 3D and 2D. So we could consider that we have only one type of data. This would be a more general way to consider the data, but it might be less clear for the user.
+### File Formats
 
-This approach allow a more "object" approach for the code : you give a folder of calibration and a folder of 2D_keypoints and the code will be able to process it. But you do not need the calibration to process the video data to obtain the 2D keypoints. As a result, the second approach is more flexible and allow to process the data in a more modular way. However, we loose the aspect of the each leaf folder being able to be processed by itself.
+- **Metadata:** TOML format is preferred for its readability, ease of parsing, and generation
+- **Array Data:** HDF5 format is recommended for its wide scientific use, efficient storage of large datasets, and compression capabilities
+- When using HDF5 for data, metadata should also be stored within the HDF5 file to ensure data remains self-contained and shareable
 
-### File format 
+## Specific Data Types
 
-It has been chosen to use for metadata to use the toml format. The toml format is a format that is easy to read and write. It is also easy to parse and generate. However, for storing the data that are in array format, it has been chosen to use the hdf5 format. The hdf5 format is a format that is very used in the scientific community and that is easy to read and write. The hdf5 format is a binary format that is very efficient for storing large amount of data. It is also easy to compress and decompress. It has been chosen when hdf5 format is used to store the metadata in the hdf5 file to be sure that the metadata is available with the data and allow the hdf5 to be easily shared and processed on their own. 
+### 00_calibration_video
 
-## 00_calibration video
+#### Video Format
+The optimal video format requires further discussion. Generally, lossless compression with highest quality is preferred.
 
-### Video format
-Still a discussion to have on the codec and the video format that should be used. Globally, it seems that we want lossless compression with the best quality possible.
+Camera-specific folders (e.g., cam_XX/) are maintained to accommodate image exports and match software requirements like Theia.
 
-The organisation where in the leaf folder we have the video file inside a folder with the name of the camera is keeped as sometime the data can be exported as images and necessitate to have a folder to store the images in a clean manner. In addition, some software such as theia are using such a structure to store the data.
-
-These should be a recommendation on the codec and the video format that should be used. Indeed, sometime format are determined by the camera used. However, having guideline might be interesting for user not used to that kind of question such as in the biomechanics community. The codec should be a lossless codec and the video format should be a format that is easy to read and write.
-
-Two propositions (to validate with people from computer vision background) :
+**Recommended codecs and formats** (pending validation from computer vision experts):
 
 | Codec          | Format                                                              |
 | -------------- | ------------------------------------------------------------------- |
 | FFV1           | .mkv / .avi                                                         |
 | H.264 lossless | .mp4 / .mkv (Use -qp 0 with libx264, but not always byte-identical) |
 
+#### Metadata
+See `description_metadata.md` file for details about the `metadata_video.toml` file.
 
-### The metadata_video.toml file
-See in the file description_metadata.md. 
+### 01_calibration_data
 
-## 01_calibration_data
+#### Calibration Matrix Format
+Currently using LBMC's format (P2S compatibility). Other formats could be supported with converters.
 
-### The calib_mat.toml file 
-Currently this is the file format that LBMC is using due to P2S. Other format could be used if more convenient. But translator should be added to convert the data from one format to another.
+OpenCV format appears to be the most common standard for camera intrinsics and extrinsics matrices:
 
-It should be decided which is the more common format that should be used for describing the camera intrinsics and extrinsics matrix. Currently, it seems that it is the OpenCV format that is used which would seems one of the most common format. 
-
-
-````toml
+```toml
 [cam_01]
 name = "M11139"
 size = [ 1920.0, 1080.0]
@@ -204,17 +203,8 @@ distortions = [ -0.13060079196920754, 0.13400864981470154, 0.0001896177879940700
 rotation = [ 0.9618561526427922, 1.5294483485830126, 0.5242193500626191]
 translation = [ -0.6270525677142821, -0.486046176284735, 1.664813522720072]
 fisheye = false
-...
-[cam_XX]
-name = "cam_XX"
-size = [ 1920.0, 1080.0]
-matrix = [ [ 2144.9601175685557, 0.0, 967.859729904023], [ 0.0, 2156.5146368800865, 550.1781128465403], [ 0.0, 0.0, 1.0]]
-distortions = [ -0.09658154939711396, 0.11563585511085413, 0.0008519503575105665, 0.0028026774341342975]
-rotation = [ -0.8305202999790112, -1.891827398628365, 0.34774377648736793]
-translation = [ 0.28359105437278004, -0.611816310511053, 3.1709460450221942]
-fisheye = false
 
-....
+# ...additional cameras...
 
 [metadata]
 ID_calibration = "ID_XX"
@@ -226,101 +216,84 @@ square_size = 0.025
 circle_diameter = 0.025
 scene = true
 scene_points_positions = [ [0.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 2.0] ]
-````
+```
 
+### 02_data_video
+Similar organization to `00_calibration_data`.
 
-## 02_data_video
-The video organisation is similar to the one used in the 00_calibration_data.
+**Open questions:**
+- Should videos be provided in both raw and undistorted formats?
+- Should video orientation be standardized?
 
-Somes questions to be asked here :
-    - Is it expected that the video will be in raw and undistorted format ? 
-    - Should the video be reorientation there. 
-    
-The calib_mat.toml file is the calibration matrix that will be used to calibrate the video. It is a toml file that contains the information about the camera and the calibration matrix intrinsics and extrinsics.
+The `calib_mat.toml` file contains camera calibration information (intrinsics and extrinsics).
 
+### 03_keypoints_2D_multisubject
 
-## 03_keypoints_2D_multisubject
+#### data_multi_person.hdf5
+Structure for bounding boxes (format: [x1, y1, x2, y2]) and keypoints (format: [x, y, confidence]):
 
-### data_multi_person.hdf5
-These data should contains the different bbox detected and the keypoints detected. The bbox should be in the format [x1, y1, x2, y2] where x1 and y1 are the coordinates of the top left corner and x2 and y2 are the coordinates of the bottom right corner. The keypoints should be in the format [x, y, conf] where x and y are the coordinates of the keypoint and conf is the confidence of the detection.
-
-````bash
- data_multi_person.hdf5
+```
+data_multi_person.hdf5
     |
     +--- cam_01
     |       |--- frame_01
     |       |       |---Id_XX
-    |       |        ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
-    |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
-    |       ...
-    |       \+--- frame_XX
-    |              |---Id_XX
-    |               ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
-    |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]                    
-    ...
+    |       |       |     |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
+    |       |       |     \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
+    |       |       \--- ...
+    |       \--- frame_XX
+    |
     +--- cam_XX
     |       |--- frame_01
     |       |       |---Id_XX
-    |       |        ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN, NaN, NaN]
-    |       |               \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
-    |       ...
-    |       \+--- frame_XX
-    |              |---Id_XX
-    |               ...    |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN NaN, NaN]
-    |                      \---keypoints ==> 3xNb_Keypoint float array [x,y,confidence] if no keypoint detected [NaN,NaN,NaN]  
+    |       |       |     |---bbox ==> 4x1 int array [x1,y1,x2,y2] if no bbox detected [NaN, NaN, NaN, NaN]
+    |       |       |     \---keypoints ==> 3xNb_Keypoint float [x,y,confidence] if no keypoint detected [NaN, NaN,NaN]
+    |       |       \--- ...
+    |       \--- frame_XX
     |
     \--- metadata
             |---dictionary name point to their corresponding indices in the keypoints array
             \---TODO list metadata
-````
+```
 
-## 04_keypoints_2D_monosubject
+### 04_keypoints_2D_monosubject
 
-The data should be in the same format as the one used in the 02_Keypoints2D_multisubject. The only difference is that there is only one subject and one camera. 
+Same format as multi-subject data but structured for a single subject:
 
-````bash
-    |   data_mono_person.hdf5
+```
+data_mono_person.hdf5
     +--- cam_01
     |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
     |       \--- keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence,n] if no keypoint detected [NaN, NaN,NaN,i]
     |
-    ...
     +--- cam_XX
     |       |--- bbox ==> 4xnb_frame int array [x1,y1,x2,y2,n] if no bbox detected [NaN, NaN NaN, NaN,i]
     |       \--- keypoints ==> 3xNb_Keypointxnb_frame float [x,y,confidence,n] if no keypoint detected [NaN, NaN,NaN,i]
     |
-    |
     \---metadata
             |---Calib_matrix
             |---dictionary name point to their corresponding indices in the keypoints array
-            |---TODO list metadata cf description_metadata.md
-            \---TODO list metadata cf description_metadata.md
-````
+            \---TODO list metadata (see description_metadata.md)
+```
 
-## 05_keypoints_3D_monosubject
+### 05_keypoints_3D_monosubject
 
-One question here is on the use of which data format. The c3d format is a format very used in biomechanics which might make it harder to be used by other people from other domains such as computer vision. The hdf5 format is more general and could be used by other people. However, there is a some useful tool to visualize the c3d data which could be useful for the user.
+The c3d format is common in biomechanics while HDF5 is more general. A solution could be to use HDF5 as the primary format and provide converters to c3d using tools like ezc3d.
 
-One solution could be to use the more general hdf5 format and to add a converter to convert the data from one format to another using a toolbox such as ezc3d. 
-
-````bash
+```
 data_mono_person.hdf5
     |
     +---points_3D ==> 3xNb_Keypointxnb_frame float [x,y,z]
     | 
     \---metadata
             |---dictionary name point to their corresponding indices in the keypoints array
-            |---TODO list metadata cf description_metadata.md
-            \---TODO list metadata cf description_metadata.md
-````
-Similar meta data should be contained in the metadata of the c3d file. 
+            \---TODO list metadata (see description_metadata.md)
+```
 
-## 05-06 Ground_truth_3D and 2D : No more needed if we consider the approach of the data organisation as a type of data.
+### Ground Truth Data
 
-The data here should have the same format as the one used in the Keypoints_3D subject and Keypoints_2D subject.
-The only difference is that in the 3D data the calibration matrix should be included in each leaf folder and do not have a specific folder for the method used to obtain the 3D keypoints. 
+Ground truth 2D and 3D data should follow the same formats as the keypoints data.
 
-An alternative proposition could be to integrate the ground truth data as a part of the 03_keypoints_2D_monosubject and 04_keypoints_3D_monosubject with a different method name being "ground_truth_2D" and "ground_truth_3D".
-This would allow to have all the data in the same place and to be able to process them together.
+An alternative would be to integrate ground truth as part of the existing keypoints data structure with method names "ground_truth_2D" and "ground_truth_3D". This would consolidate all data in the same place for easier processing.
 
-Both make sens and should be discussed with the team.
+Both approaches have merit and should be discussed further.
