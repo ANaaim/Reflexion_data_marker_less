@@ -1,21 +1,21 @@
 ## data structure
-````mermaid
-graph LR
-    ROOT["<strong>project_root</strong>"]
+In all folder the following folder organisation can be interchanged and be in any order using the **folder_depth** key in the metadata file but should be kept the same in the different type of data folder:
 
-    %% Global metadata
-    ROOT --> META["Metadata_data_set.toml"]
+````
++---01_calibration_matrix
+    \---subject_XX
+         \---session_XX
+             \---trial_XX
+                    -type_of_file.XX
+will be refers as 
++---01_calibration_matrix
+    \---folder_organisation
+            \----type_of_file.XX
+````
 
-    %% 00 – Calibration data
-    ROOT --> CALIB["00_calibration_data"]
-    CALIB --> CALIB_ID["IDXX_calib"]
-    CALIB_ID --> CALIB_MAT["calib_matrix.toml"]
-    CALIB_ID --> CALIB_META["metadata_video.toml"]
-    CALIB_ID --> EX["extrinsics"]
-    EX --> EX_CAM["cam_XX/"]
-    EX_CAM --> EX_AVI["cam_XX.avi"]
-    CALIB_ID --> IN["intrinsics"]
-    IN --> IN_CAM["cam_XX/"]
+For the next schema it will be refers as **folder_ organisation** to make the graph more readable.
+
+````
     IN_CAM --> IN_AVI["cam_XX.avi"]
 
     %% 01 – Data video
@@ -109,47 +109,39 @@ graph LR
     |                   cam_XX.avi
     |
     +---01_calibration_matrix
-    |      \---subject_XX
-    |          \---session_XX
-    |              \---trial_XX
-    |                      |
-    |                      \---calib.toml
+    |      +---folder_organisation
+    |      |     \---calib.toml
+    |      ...
     |
     +---02_data_video <== 
-    |   +---subject_XX
-    |   |    +---session_XX
-    |   |        +---trial_XX
-    |   ...         |   optional : calib_mat_from_IDXX.toml 
-    |               |   metadata_video.toml
-    |               \---video
-    |                    \---cam_XX
-    |                        cam_XX.avi/cam.jpg 
+    |   +---folder_organisation
+    |   |   |---optional : calib_mat_from_IDXX.toml 
+    |   |   |---metadata_video.toml
+    |   ...     \---video
+    |               \---cam_XX|
+    |                   cam_XX.avi/cam.jpg 
     |
     +---03_keypoints_2D_multisubject 
-    |   |   +---metadata_method_origin_data  <== C'est sur que c'est nécéssaire (pas forcément standardisé
-    |   |   +---subject_XX
-    |   |       +---session_XX
-    |   |           +---trial_XX
-    |   |                   data_multisubject.hdf5
+    |   |   +---metadata_method_origin_data
+    |   |   +---folder_organisation
+    |   |           \---data_multisubject.hdf5
     |   ..
     |
     +---04_keypoints_2D_monosubject
-    |   |   +---metadata_method_origin_data
-    |   |   +---subject_XX
-    |   |       +---session_XX
-    |   |           +---trial_XX
-    |   |                +---ID_subject_XX
-    |   |                        data_monosubject.hdf5
-    |   ...
+    |      +---metadata_method_origin_data
+    |      +---folder_organisation
+    |              |---ID_subject_XX
+    |              |       \data_monosubject.hdf5
+    | 
     |   
     \---05_keypoints_3D_monosubject
        |---metadata_method_origin_data
-       +---subject_XX
-            +---session_XX
-                +---trial_XX
-                    +---ID_subject_XX
-                        data_mono_person.c3d
-                        data_mono_person.hdf5
+       +---folder_organisation
+                    |---ID_subject_XX
+                    |    data_mono_person.c3d
+                    |    data_mono_person.hdf5
+                    ....
+
 ````
 
 ## Global comment
