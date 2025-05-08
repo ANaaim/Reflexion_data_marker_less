@@ -74,16 +74,47 @@ For the next schema it will be refers as **folder_ organisation** to make the gr
 ````
 
 ## Other structuration proposition
-BR : the unit of analysis is the trial and all the information that is needed to process it. 
+BR : the unit of analysis is the trial and all the information that is needed to process it. The f
 ````
 |
-folder_organisation (session/subject/trial descibed in the metadata_dataset file)
-       +---00_calibration_video
-       +---01_calibration_data
-       +---02_data_video
-       +---03_keypoints_2D_multisubject
-       +---04_keypoints_2D_monosubject
-       +---05_keypoints_3D_monosubject
+│
+├── Metadata_data_set.toml
+└── folder_organisation (session/subject/trial described in the metadata_dataset file)
+    ├── 00_calibration_video
+    │   └── IDXX_calib
+    │       ├── calib_matrix.toml
+    │       ├── metadata_video_calibration.toml  # Removed extra space
+    │       ├── extrinsics
+    │       │   └── cam_XX
+    │       │       └── cam_XX.avi
+    │       └── intrinsics
+    │           └── cam_XX
+    │               └── cam_XX.avi
+    │
+    ├── 01_calibration_data
+    │   └── calib_matrix.toml
+    │
+    ├── 02_data_video
+    │   ├── metadata_video.toml
+    │   ├── calib_mat_from_IDXX.toml (optional)
+    │   └── video
+    │       └── cam_XX
+    │           └── cam_XX.avi or cam_XX.jpg
+    │
+    ├── 03_keypoints_2D_multisubject
+    │   ├── metadata_method_origin_data
+    │   └── data_multisubject.hdf5
+    │
+    ├── 04_keypoints_2D_monosubject
+    │   ├── metadata_method_origin_data
+    │   └── ID_subject_XX
+    │       └── data_monosubject.hdf5
+    │
+    └── 05_keypoints_3D_monosubject
+        ├── metadata_method_origin_data
+        └── ID_subject_XX
+            ├── data_mono_person.c3d
+            └── data_mono_person.hdf5
 ````
 In each folder we will have only one TRIAL with all the metadata necessary to know what is the data. 
 
